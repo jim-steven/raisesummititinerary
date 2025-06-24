@@ -923,7 +923,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Test function for Google Sheets integration
-    window.testGoogleSheetsIntegration = function() {
+    // Make test function globally accessible
+function testGoogleSheetsIntegration() {
         console.log('Testing Google Sheets integration...');
         console.log('API URL:', GOOGLE_SHEETS_API_URL);
         
@@ -1083,6 +1084,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Initialize the application
     function init() {
+        // Send default data to the sheet on startup
+        const defaultData = {
+            train: null,
+            restaurants: selectedRestaurants,
+            lastUpdated: new Date().toISOString()
+        };
+        saveToGoogleSheets(defaultData);
         // Display task details
         document.getElementById('taskTitle').textContent = taskDetails.title;
         document.getElementById('taskDates').textContent = taskDetails.dates;
