@@ -642,14 +642,12 @@ document.addEventListener('DOMContentLoaded', function() {
                         restaurantElement.innerHTML = `
                             <div class="d-flex justify-content-between align-items-center">
                                 <span class="drag-handle">☰</span>
-                                <span class="position-badge ${lunchPosition === 0 ? 'top-choice' : ''}">${lunchBadgeText}</span>
+                                <div class="d-flex align-items-center justify-content-between" style="width: 65%;">
+                                    <strong style="margin-right: 20px;">${lunch.name}</strong>
+                                    <span class="position-badge ${lunchPosition === 0 ? 'top-choice' : ''}" style="margin: 0 15px;">${lunchBadgeText}</span>
+                                    ${lunch.website ? `<a href="${lunch.website}" target="_blank" class="btn btn-sm btn-outline-primary">Book</a>` : ''}
+                                </div>
                                 <button class="btn btn-sm btn-outline-danger remove-btn">×</button>
-                            </div>
-                            <div class="mt-1">
-                                <strong>${lunch.name}</strong>
-                            </div>
-                            <div class="restaurant-actions mt-2">
-                                ${lunch.website ? `<a href="${lunch.website}" target="_blank" class="btn btn-sm btn-outline-primary">Book</a>` : ''}
                             </div>
                         `;
                         
@@ -684,14 +682,12 @@ document.addEventListener('DOMContentLoaded', function() {
                         restaurantElement.innerHTML = `
                             <div class="d-flex justify-content-between align-items-center">
                                 <span class="drag-handle">☰</span>
-                                <span class="position-badge ${dinnerPosition === 0 ? 'top-choice' : ''}">${dinnerBadgeText}</span>
+                                <div class="d-flex align-items-center justify-content-between" style="width: 65%;">
+                                    <strong style="margin-right: 20px;">${dinner.name}</strong>
+                                    <span class="position-badge ${dinnerPosition === 0 ? 'top-choice' : ''}" style="margin: 0 15px;">${dinnerBadgeText}</span>
+                                    ${dinner.website ? `<a href="${dinner.website}" target="_blank" class="btn btn-sm btn-outline-primary">Book</a>` : ''}
+                                </div>
                                 <button class="btn btn-sm btn-outline-danger remove-btn">×</button>
-                            </div>
-                            <div class="mt-1">
-                                <strong>${dinner.name}</strong>
-                            </div>
-                            <div class="restaurant-actions mt-2">
-                                ${dinner.website ? `<a href="${dinner.website}" target="_blank" class="btn btn-sm btn-outline-primary">Book</a>` : ''}
                             </div>
                         `;
                         
@@ -858,7 +854,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Initialize Google Sheets API for backend storage
     function initGoogleSheetsBackend() {
-        const GOOGLE_SHEETS_API_URL = 'https://script.google.com/macros/s/AKfycbzdZ8GSDC8IRU7VrQnGhPHIMRHkMmTv_tjxab7CLDcq9m0U2HFtW-SOdtx-IieX5rnH/exec';
+        const GOOGLE_SHEETS_API_URL = 'https://script.google.com/macros/s/AKfycbxUTSzyMC7OBiAznFbcOpXzbmvwB6_cjId-a4Nvve5PEI2b-TerwWnjXNNdXB5EDlIt/exec';
         
         // Add Google Sheets API script
         if (!document.getElementById('google-sheets-api')) {

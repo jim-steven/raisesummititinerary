@@ -12,10 +12,26 @@ function doPost(e) {
   return handleRequest(e);
 }
 
+function doOptions(e) {
+  var output = ContentService.createTextOutput();
+  output.setMimeType(ContentService.MimeType.JSON);
+  
+  // Set CORS headers
+  output.setContent(JSON.stringify({status: 'ok'}));
+  return output;
+}
+
 function handleRequest(e) {
   // Set up CORS headers for cross-origin requests
   var output = ContentService.createTextOutput();
   output.setMimeType(ContentService.MimeType.JSON);
+  
+  // Add CORS headers
+  var headers = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type'
+  };
   
   try {
     // Parse request parameters
@@ -38,12 +54,20 @@ function handleRequest(e) {
     }
     
     output.setContent(JSON.stringify(result));
+    // Apply headers
+    for (var key in headers) {
+      output.addHeader(key, headers[key]);
+    }
     return output;
   } catch (error) {
     output.setContent(JSON.stringify({ 
       success: false, 
       error: error.toString() 
     }));
+    // Apply headers even for error responses
+    for (var key in headers) {
+      output.addHeader(key, headers[key]);
+    }
     return output;
   }
 }
