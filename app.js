@@ -842,7 +842,8 @@ document.addEventListener('DOMContentLoaded', function() {
                         updateItinerary();
                     }
                 }
-            });
+            }
+        });
     }
 
     // Format date for display
@@ -945,7 +946,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             },
             lastUpdated: new Date().toISOString()
-    };
+        };
     
         // Save to Google Sheets
         saveToGoogleSheets(sampleData);
