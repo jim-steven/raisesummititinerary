@@ -1,19 +1,26 @@
-/**
- * Global functions for sending data to Google Sheets
- */
-
-// Function to send sample data to Google Sheets
+// Direct global function definition
 function sendSampleData() {
     console.log('Sending sample data to Google Sheets...');
     
-    // Get trainOptions from the page or fallback to a sample
-    const trainOptions = window.trainOptions || [
-        { id: 2, departure: "Paris Lyon", arrival: "Annecy", departureTime: "12:46" }
-    ];
-    
     // Sample data based on PDF content
     const sampleData = {
-        train: trainOptions[1] || trainOptions[0], // Middle train option or first available
+        train: {
+            id: 2,
+            departure: "Paris Lyon",
+            arrival: "Annecy",
+            departureDate: "2025-07-09",
+            departureTime: "12:46",
+            arrivalTime: "16:32",
+            duration: "4h",
+            priceRegularUSD: 107.31,
+            priceFirstClassUSD: 130.39,
+            totalPriceUSD: 218.48,
+            priceRegularEUR: 99.25,
+            priceFirstClassEUR: 120.60,
+            totalPriceEUR: 202.10,
+            tag: "",
+            link: "https://www.google.com/travel"
+        },
         restaurants: {
             "2025-07-09": { 
                 lunch: [4, 9], // Le Chalet and Le Bistrot des Tilleuls
@@ -31,9 +38,10 @@ function sendSampleData() {
         lastUpdated: new Date().toISOString()
     };
 
-    // Make AJAX request directly
+    // API URL
     const GOOGLE_SHEETS_API_URL = 'https://script.google.com/macros/s/AKfycbxUTSzyMC7OBiAznFbcOpXzbmvwB6_cjId-a4Nvve5PEI2b-TerwWnjXNNdXB5EDlIt/exec';
     
+    // Make AJAX request directly
     fetch(GOOGLE_SHEETS_API_URL, {
         method: 'POST',
         body: JSON.stringify({
@@ -54,22 +62,25 @@ function sendSampleData() {
         alert('Error sending sample data: ' + error.message);
     });
     
-    return "Sample data send request initiated. Check console for details.";
+    return "Sample data sending initiated. Check console for results.";
 }
 
-// Function to test Google Sheets integration
+// Test function for Google Sheets integration
 function testGoogleSheetsIntegration() {
     console.log('Testing Google Sheets integration...');
     const GOOGLE_SHEETS_API_URL = 'https://script.google.com/macros/s/AKfycbxUTSzyMC7OBiAznFbcOpXzbmvwB6_cjId-a4Nvve5PEI2b-TerwWnjXNNdXB5EDlIt/exec';
     
-    // Get trainOptions from the page or fallback to a sample
-    const trainOptions = window.trainOptions || [
-        { id: 1, departure: "Paris Lyon", arrival: "Annecy", departureTime: "09:46" }
-    ];
-    
     // Test data
     const testData = {
-        train: trainOptions[0],
+        train: {
+            id: 1,
+            departure: "Paris Lyon",
+            arrival: "Annecy",
+            departureDate: "2025-07-09",
+            departureTime: "09:46",
+            arrivalTime: "13:29",
+            duration: "4h"
+        },
         restaurants: {
             "2025-07-09": { lunch: [4], dinner: [1] },
             "2025-07-10": { lunch: [7], dinner: [3] }
