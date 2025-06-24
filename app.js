@@ -924,8 +924,9 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Test function for Google Sheets integration
-    // Create a function to send sample data from the PDF
-    window.sendSampleData = function() {
+    // Create functions for global use
+    // Will be attached to window object at the end
+    function _sendSampleData() {
         console.log('Sending sample data to Google Sheets...');
     
         // Sample data based on PDF content
@@ -954,8 +955,7 @@ document.addEventListener('DOMContentLoaded', function() {
         return "Sample data sent to Google Sheets! Check the sheet for results.";
     };
 
-// Make test function globally accessible
-    window.testGoogleSheetsIntegration = function() {
+    function _testGoogleSheetsIntegration() {
         console.log('Testing Google Sheets integration...');
         console.log('API URL:', GOOGLE_SHEETS_API_URL);
         
@@ -1112,6 +1112,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
         }
     }
+
+    // Add functions to global scope
+    window.sendSampleData = _sendSampleData;
+    window.testGoogleSheetsIntegration = _testGoogleSheetsIntegration;
 
     // Initialize the application
     function init() {
