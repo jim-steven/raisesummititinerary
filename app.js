@@ -924,37 +924,37 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Test function for Google Sheets integration
     // Create a function to send sample data from the PDF
-function sendSampleData() {
-    console.log('Sending sample data to Google Sheets...');
+    window.sendSampleData = function() {
+        console.log('Sending sample data to Google Sheets...');
     
-    // Sample data based on PDF content
-    const sampleData = {
-        train: trainOptions[1], // Middle train option
-        restaurants: {
-            "2025-07-09": { 
-                lunch: [4, 9], // Le Chalet and Le Bistrot des Tilleuls
-                dinner: [1, 2]  // Cozna and La Ciboulette
+        // Sample data based on PDF content
+        const sampleData = {
+            train: trainOptions[1], // Middle train option
+            restaurants: {
+                "2025-07-09": { 
+                    lunch: [4, 9], // Le Chalet and Le Bistrot des Tilleuls
+                    dinner: [1, 2]  // Cozna and La Ciboulette
+                },
+                "2025-07-10": { 
+                    lunch: [7, 10], // Café de la Place and La Coupole
+                    dinner: [3, 6]   // L'Esquisse and Le Belvédère
+                },
+                "2025-07-11": { 
+                    lunch: [5, 8],  // Le Freti and Auberge du Lac
+                    dinner: [3]      // L'Esquisse
+                }
             },
-            "2025-07-10": { 
-                lunch: [7, 10], // Café de la Place and La Coupole
-                dinner: [3, 6]   // L'Esquisse and Le Belvédère
-            },
-            "2025-07-11": { 
-                lunch: [5, 8],  // Le Freti and Auberge du Lac
-                dinner: [3]      // L'Esquisse
-            }
-        },
-        lastUpdated: new Date().toISOString()
+            lastUpdated: new Date().toISOString()
     };
     
-    // Save to Google Sheets
-    saveToGoogleSheets(sampleData);
-    
-    return "Sample data sent to Google Sheets! Check the sheet for results.";
-}
+        // Save to Google Sheets
+        saveToGoogleSheets(sampleData);
+        
+        return "Sample data sent to Google Sheets! Check the sheet for results.";
+    };
 
 // Make test function globally accessible
-function testGoogleSheetsIntegration() {
+    window.testGoogleSheetsIntegration = function() {
         console.log('Testing Google Sheets integration...');
         console.log('API URL:', GOOGLE_SHEETS_API_URL);
         
@@ -994,7 +994,7 @@ function testGoogleSheetsIntegration() {
         }).catch(error => {
             console.error('Test error:', error);
         });
-    }
+    };
         
         // Show save confirmation message
         function showSaveConfirmation(success) {
