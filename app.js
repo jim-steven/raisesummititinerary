@@ -842,8 +842,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         updateItinerary();
                     }
                 }
-            }
-        });
+            });
     }
 
     // Format date for display
@@ -904,21 +903,67 @@ document.addEventListener('DOMContentLoaded', function() {
                         data: data
                     }),
                     headers: {'Content-Type': 'application/json'}
-                }).then(response => response.json())
-                  .then(result => {
+                }).then(response => {
+                    console.log('Response status:', response.status);
+                    return response.json();
+                })
+                .then(result => {
                     console.log('Success:', result);
                     showSaveConfirmation(true);
-                  })
-                  .catch(error => {
+                })
+                .catch(error => {
                     console.error('Error:', error);
                     showSaveConfirmation(false);
-                  });
+                });
                 
             } catch (e) {
                 console.error('Error saving to Google Sheets:', e);
                 showSaveConfirmation(false);
             }
-        }
+    }
+    
+    // Test function for Google Sheets integration
+    window.testGoogleSheetsIntegration = function() {
+        console.log('Testing Google Sheets integration...');
+        console.log('API URL:', GOOGLE_SHEETS_API_URL);
+        
+        // Test data
+        const testData = {
+            train: trainOptions[0],
+            restaurants: {
+                "2025-07-09": { lunch: [4], dinner: [1] },
+                "2025-07-10": { lunch: [7], dinner: [3] }
+            },
+            lastUpdated: new Date().toISOString()
+        };
+        
+        // Test saving
+        console.log('Testing save...');
+        fetch(GOOGLE_SHEETS_API_URL, {
+            method: 'POST',
+            body: JSON.stringify({
+                action: 'save',
+                data: testData
+            }),
+            headers: {'Content-Type': 'application/json'}
+        }).then(response => {
+            console.log('Save response status:', response.status);
+            return response.json();
+        }).then(result => {
+            console.log('Save result:', result);
+            
+            // Now test loading
+            console.log('Testing load...');
+            return fetch(GOOGLE_SHEETS_API_URL + '?action=load');
+        }).then(response => {
+            console.log('Load response status:', response.status);
+            return response.json();
+        }).then(result => {
+            console.log('Load result:', result);
+        }).catch(error => {
+            console.error('Test error:', error);
+        });
+    }
         
         // Show save confirmation message
         function showSaveConfirmation(success) {
