@@ -1298,35 +1298,14 @@ window.reloadOptionsFromGoogleSheets = reloadOptionsFromGoogleSheets;
                 }
             ];
             
-            // Use hardcoded restaurant data
-            restaurantOptions = [
-                {
-                    id: 1,
-                    name: "Cozna",
-                    cuisine: "Contemporary",
-                    price: "€€€",
-                    location: "Annecy",
-                    rating: 4.6,
-                    mapLink: "https://maps.app.goo.gl/qsHULaNXYMhf5ein8",
-                    website: "https://restaurantcozna.com/",
-                    description: "Elegant dining with local ingredients and creative dishes",
-                    suitable: ["dinner"],
-                    availableDates: ["2025-07-09", "2025-07-10", "2025-07-11"]
-                },
-                {
-                    id: 2,
-                    name: "La Ciboulette",
-                    cuisine: "French",
-                    price: "€€€",
-                    location: "Annecy",
-                    rating: 4.8,
-                    mapLink: "https://maps.app.goo.gl/Wxsf655N2RcnTtxa8",
-                    website: "https://bookings.zenchef.com/results?rid=374570&pid=1001",
-                    description: "Michelin-starred restaurant with elegant French cuisine",
-                    suitable: ["dinner"],
-                    availableDates: ["2025-07-09", "2025-07-11"]
-                }
-            ];
+            // Use hardcoded restaurant database
+            if (window.restaurantDatabase && window.restaurantDatabase.length > 0) {
+                restaurantOptions = window.restaurantDatabase;
+                console.log('Using restaurant database with', restaurantOptions.length, 'restaurants');
+            } else {
+                console.error('Restaurant database not loaded!');
+                restaurantOptions = [];
+            }
             
             console.log('About to render train options...');
             renderTrainOptions();
