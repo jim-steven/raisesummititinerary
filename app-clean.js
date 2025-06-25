@@ -603,8 +603,11 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('Updating itinerary...');
         updateItinerary();
         
-        console.log('Initializing drag and drop...');
-        initDragAndDrop();
+        // Wait for DOM update before initializing drag and drop
+        setTimeout(() => {
+            console.log('Initializing drag and drop...');
+            initDragAndDrop();
+        }, 100);
         
         console.log('Clean restaurant app initialized successfully!');
     } catch (error) {
