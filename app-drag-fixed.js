@@ -15,9 +15,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Use the restaurant database
     const restaurantOptions = window.restaurantDatabase;
     
-    // Helper function to get restaurant ranking tag
-    function getRankingTag(restaurantId) {
-        const index = restaurantOptions.findIndex(r => r.id === restaurantId);
+    // Helper function to get restaurant ranking tag based on position in meal slot
+    function getRankingTag(restaurantId, mealRestaurants) {
+        const index = mealRestaurants.findIndex(id => id === restaurantId);
         if (index === -1) return '';
         if (index === 0) return 'Top';
         return `Option ${index + 1}`;
@@ -407,7 +407,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         restaurantElement.setAttribute('data-date', day.date);
                         restaurantElement.setAttribute('data-meal-type', 'lunch');
                         
-                        const rankingTag = getRankingTag(lunch.id);
+                        const rankingTag = getRankingTag(lunch.id, lunchItems);
                         restaurantElement.innerHTML = `
                             <div class="d-flex justify-content-between align-items-center p-2 mb-2 border rounded">
                                 <span class="drag-handle">☰</span>
@@ -453,7 +453,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         restaurantElement.setAttribute('data-date', day.date);
                         restaurantElement.setAttribute('data-meal-type', 'dinner');
                         
-                        const rankingTag = getRankingTag(dinner.id);
+                        const rankingTag = getRankingTag(dinner.id, dinnerItems);
                         restaurantElement.innerHTML = `
                             <div class="d-flex justify-content-between align-items-center p-2 mb-2 border rounded">
                                 <span class="drag-handle">☰</span>
