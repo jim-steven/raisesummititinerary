@@ -232,16 +232,19 @@ document.addEventListener('DOMContentLoaded', function() {
                 <td>
                     <div class="d-flex align-items-center">
                         <span class="drag-handle me-2">☰</span>
-                        <strong class="restaurant-name" data-bs-toggle="modal" data-bs-target="#restaurantModal" style="cursor: pointer;">${restaurant.name}</strong>
+                        ${restaurant.tripadvisor ? 
+                            `<strong><a href="${restaurant.tripadvisor}" target="_blank" class="restaurant-name text-decoration-none" style="cursor: pointer;">${restaurant.name}</a></strong>` : 
+                            `<strong class="restaurant-name" data-bs-toggle="modal" data-bs-target="#restaurantModal" style="cursor: pointer;">${restaurant.name}</strong>`}
                     </div>
                 </td>
                 <td>${restaurant.cuisine}</td>
                 <td>${restaurant.priceRange}</td>
-                <td>${restaurant.distance}</td>
                 <td>
-                    <a href="${restaurant.reservation}" target="_blank" class="btn btn-sm btn-outline-primary">Reserve</a>
+                    ${restaurant.distance}${restaurant.travelTime ? ` <a href="${restaurant.directions || `https://maps.google.com/maps?daddr=${encodeURIComponent(restaurant.name + ', Annecy, France')}`}" target="_blank" class="text-decoration-none">[${restaurant.travelTime}]</a>` : ''}
                 </td>
                 <td>
+                    ${restaurant.reservation ? `<a href="${restaurant.reservation}" target="_blank" class="btn btn-sm btn-outline-primary me-1">Book</a>` : ''}
+                    ${restaurant.phone ? `<a href="tel:${restaurant.phone}" class="btn btn-sm btn-outline-secondary me-1">📞</a>` : ''}
                     <button class="btn btn-sm btn-outline-info view-details-btn" data-id="${restaurant.id}">View Details</button>
                 </td>
             `;
@@ -262,7 +265,9 @@ document.addEventListener('DOMContentLoaded', function() {
         const modalTitle = modal.querySelector('#restaurantModalLabel');
         const modalBody = modal.querySelector('.modal-body');
 
-        modalTitle.textContent = restaurant.name;
+        modalTitle.innerHTML = restaurant.tripadvisor ? 
+            `<a href="${restaurant.tripadvisor}" target="_blank" class="text-decoration-none">${restaurant.name}</a>` : 
+            restaurant.name;
         
         // Build images carousel
         let carouselHTML = '';
@@ -311,7 +316,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
             </div>
             <div class="mt-3">
-                <a href="${restaurant.reservation}" target="_blank" class="btn btn-primary">Make Reservation</a>
+                ${restaurant.reservation ? 
+                    `<a href="${restaurant.reservation}" target="_blank" class="btn btn-primary me-2">Book Online</a>` : ''}
+                ${restaurant.phone ? 
+                    `<a href="tel:${restaurant.phone}" class="btn btn-outline-secondary me-2">📞 Call ${restaurant.phone}</a>` : ''}
+                ${!restaurant.reservation && !restaurant.phone ? 
+                    '<p class="text-muted">No reservations needed</p>' : ''}
+                ${restaurant.directions || restaurant.travelTime ? 
+                    `<a href="${restaurant.directions || `https://maps.google.com/maps?daddr=${encodeURIComponent(restaurant.name + ', Annecy, France')}`}" target="_blank" class="btn btn-outline-info">Get Directions${restaurant.travelTime ? ` (${restaurant.travelTime})` : ''}</a>` : 
+                    ''}
             </div>
         `;
 
@@ -388,8 +401,13 @@ document.addEventListener('DOMContentLoaded', function() {
                         restaurantElement.innerHTML = `
                             <div class="d-flex justify-content-between align-items-center p-2 mb-2 border rounded">
                                 <span class="drag-handle">☰</span>
-                                <strong>${lunch.name}</strong>
-                                ${lunch.reservation ? `<a href="${lunch.reservation}" target="_blank" class="btn btn-sm btn-outline-primary">Book</a>` : ''}
+                                <div class="d-flex align-items-center flex-grow-1">
+                                    <strong>${lunch.name}</strong>
+                                    <div class="ms-auto">
+                                        ${lunch.reservation ? `<a href="${lunch.reservation}" target="_blank" class="btn btn-xs btn-outline-primary me-1">Book</a>` : ''}
+                                        ${lunch.phone ? `<a href="tel:${lunch.phone}" class="btn btn-xs btn-outline-secondary me-1">📞</a>` : ''}
+                                    </div>
+                                </div>
                                 <button class="btn btn-sm btn-outline-danger remove-btn">×</button>
                             </div>
                         `;
@@ -425,8 +443,13 @@ document.addEventListener('DOMContentLoaded', function() {
                         restaurantElement.innerHTML = `
                             <div class="d-flex justify-content-between align-items-center p-2 mb-2 border rounded">
                                 <span class="drag-handle">☰</span>
-                                <strong>${dinner.name}</strong>
-                                ${dinner.reservation ? `<a href="${dinner.reservation}" target="_blank" class="btn btn-sm btn-outline-primary">Book</a>` : ''}
+                                <div class="d-flex align-items-center flex-grow-1">
+                                    <strong>${dinner.name}</strong>
+                                    <div class="ms-auto">
+                                        ${dinner.reservation ? `<a href="${dinner.reservation}" target="_blank" class="btn btn-xs btn-outline-primary me-1">Book</a>` : ''}
+                                        ${dinner.phone ? `<a href="tel:${dinner.phone}" class="btn btn-xs btn-outline-secondary me-1">📞</a>` : ''}
+                                    </div>
+                                </div>
                                 <button class="btn btn-sm btn-outline-danger remove-btn">×</button>
                             </div>
                         `;
