@@ -65,11 +65,26 @@ document.addEventListener('DOMContentLoaded', function() {
     let selectedTrain = null;
     let showEuroPrices = false;
     let selectedRestaurants = {
-        '2025-07-07': { lunch: [], dinner: [] },
-        '2025-07-08': { lunch: [], dinner: [] },
-        '2025-07-09': { lunch: [], dinner: [] },
-        '2025-07-10': { lunch: [], dinner: [] },
-        '2025-07-11': { lunch: [], dinner: [] }
+        '2025-07-08': { 
+            lunch: [], // Summit lunch (not a restaurant)
+            dinner: [] // Summer Soirée event (not a restaurant)
+        },
+        '2025-07-09': { 
+            lunch: [], // Traveling/transit
+            dinner: [4, 5, 7] // Savoyard & Hearty: Mama Lise, Le Chalet, Le Freti
+        },
+        '2025-07-10': { 
+            lunch: [1, 8, 13], // Le Denti, Le Vertumne, Le Petit Thiou
+            dinner: [2, 5, 7] // Elegant & Filling: Cozna, Le Chalet, Le Freti
+        },
+        '2025-07-11': { 
+            lunch: [12, 8], // Le Verriere, Le Vertumne  
+            dinner: [4, 5] // Hearty Regional: Mama Lise, Le Chalet
+        },
+        '2025-07-12': { 
+            lunch: [1, 6], // Le Denti, Le Biboquet
+            dinner: [11, 2] // Refined Finish: Saba, Cozna
+        }
     };
 
     // Event listeners
@@ -283,11 +298,11 @@ document.addEventListener('DOMContentLoaded', function() {
         tbody.innerHTML = '';
 
         const dates = [
-            { date: '2025-07-07', day: 'Tuesday', label: 'Jul 7, 2025' },
-            { date: '2025-07-08', day: 'Wednesday', label: 'Jul 8, 2025' },
-            { date: '2025-07-09', day: 'Thursday', label: 'Jul 9, 2025' },
-            { date: '2025-07-10', day: 'Friday', label: 'Jul 10, 2025' },
-            { date: '2025-07-11', day: 'Saturday', label: 'Jul 11, 2025' }
+            { date: '2025-07-08', day: 'Monday', label: 'Jul 8, 2025' },
+            { date: '2025-07-09', day: 'Tuesday', label: 'Jul 9, 2025' },
+            { date: '2025-07-10', day: 'Wednesday', label: 'Jul 10, 2025' },
+            { date: '2025-07-11', day: 'Thursday', label: 'Jul 11, 2025' },
+            { date: '2025-07-12', day: 'Friday', label: 'Jul 12, 2025' }
         ];
 
         dates.forEach(day => {
@@ -308,7 +323,14 @@ document.addEventListener('DOMContentLoaded', function() {
             lunchCell.setAttribute('data-meal-type', 'lunch');
             lunchCell.className = 'meal-cell lunch-cell';
             
-            if (lunchItems.length > 0) {
+            // Special handling for specific dates
+            if (day.date === '2025-07-08') {
+                // Monday 7/8 - Summit lunch
+                lunchCell.innerHTML = `<div class="meal-event alert alert-info">Lunch at Summit</div>`;
+            } else if (day.date === '2025-07-09' && lunchItems.length === 0) {
+                // Tuesday 7/9 - Travel day lunch
+                lunchCell.innerHTML = `<div class="meal-event alert alert-warning">Might be traveling or still in transit</div>`;
+            } else if (lunchItems.length > 0) {
                 lunchItems.forEach(restaurantId => {
                     const lunch = restaurantOptions.find(r => r.id === restaurantId);
                     if (lunch) {
@@ -341,7 +363,11 @@ document.addEventListener('DOMContentLoaded', function() {
             dinnerCell.setAttribute('data-meal-type', 'dinner');
             dinnerCell.className = 'meal-cell dinner-cell';
             
-            if (dinnerItems.length > 0) {
+            // Special handling for Monday dinner
+            if (day.date === '2025-07-08' && dinnerItems.length === 0) {
+                // Monday 7/8 - Summer Soirée event
+                dinnerCell.innerHTML = `<div class="meal-event alert alert-info">Summer Soirée – Hosted by Sequoia & Drysdale</div>`;
+            } else if (dinnerItems.length > 0) {
                 dinnerItems.forEach(restaurantId => {
                     const dinner = restaurantOptions.find(r => r.id === restaurantId);
                     if (dinner) {
