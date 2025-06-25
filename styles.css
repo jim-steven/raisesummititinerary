@@ -259,6 +259,17 @@ h1 {
     margin-bottom: 10px;
 }
 
+/* Styles for the restaurant items when using click selection */
+.restaurant-item {
+    cursor: pointer;
+}
+
+.restaurant-item:hover {
+    background-color: #f5f5f5;
+    transform: translateY(-2px);
+    transition: all 0.2s ease;
+}
+
 .btn-primary {
     background-color: #4CAF50;
     border-color: #4CAF50;

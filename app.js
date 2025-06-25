@@ -1,209 +1,192 @@
-document.addEventListener('DOMContentLoaded', function() {
-    // Key task details
-    const taskDetails = {
-        title: "RAISE Summit - Annecy",
-        dates: "July 9-11, 2025",
-        location: "Annecy, France",
-        description: "Planning for the RAISE Summit in Annecy including travel and dining options."
-    };
-    
-    // Data structure for trains
-    const trainOptions = [
-        {
-            id: 1,
-            departure: "Paris Lyon",
-            arrival: "Annecy",
-            departureDate: "2025-07-09",
-            departureTime: "09:46",
-            arrivalTime: "13:29",
-            duration: "4h",
-            priceRegularUSD: 135.41,
-            priceFirstClassUSD: 218.04,
-            totalPriceUSD: 270.82,
-            priceRegularEUR: 125.20,
-            priceFirstClassEUR: 201.70,
-            totalPriceEUR: 250.50,
-            tag: "Earliest",
-            link: "https://www.google.com/travel"
-        },
-        {
-            id: 2,
-            departure: "Paris Lyon",
-            arrival: "Annecy",
-            departureDate: "2025-07-09",
-            departureTime: "12:46",
-            arrivalTime: "16:32",
-            duration: "4h",
-            priceRegularUSD: 107.31,
-            priceFirstClassUSD: 130.39,
-            totalPriceUSD: 218.48,
-            priceRegularEUR: 99.25,
-            priceFirstClassEUR: 120.60,
-            totalPriceEUR: 202.10,
-            tag: "",
-            link: "https://www.google.com/travel"
-        },
-        {
-            id: 3,
-            departure: "Paris Lyon",
-            arrival: "Annecy",
-            departureDate: "2025-07-09",
-            departureTime: "17:46",
-            arrivalTime: "21:40",
-            duration: "4h",
-            priceRegularUSD: 86.50,
-            priceFirstClassUSD: 117.70,
-            totalPriceUSD: 170.68,
-            priceRegularEUR: 80.00,
-            priceFirstClassEUR: 108.90,
-            totalPriceEUR: 157.90,
-            tag: "Latest",
-            link: "https://www.google.com/travel"
+// Direct render test - globally accessible
+window.testRender = function() {
+    console.log('Global test render called');
+    try {
+        window.dataFunctions.testRender();
+    } catch (e) {
+        console.error('Error in global test render:', e);
+    }
+};
+
+document.addEventListener('DOMContentLoaded', async function() {
+    try {
+        console.log('DOM content loaded');
+        
+        // Debug window.dataFunctions
+        console.log('window.dataFunctions available:', !!window.dataFunctions);
+        if (window.dataFunctions) {
+            console.log('API URL:', window.dataFunctions.API_URL);
+            try {
+                console.log('Testing API connection...');
+                const testFetch = await fetch(window.dataFunctions.API_URL + '?action=getTrainOptions');
+                console.log('API response status:', testFetch.status);
+                const testData = await testFetch.json();
+                console.log('API response data:', testData);
+            } catch (error) {
+                console.error('API test failed:', error);
+                console.log('Attempting to render test data directly...');
+                window.dataFunctions.testRender();
+            }
+        } else {
+            console.error('window.dataFunctions is not available!');
         }
-    ];
+    } catch (outerError) {
+        console.error('Error in initialization section:', outerError);
+    }
+    
+    // Check if trainOptions div exists
+    const trainOptionsDiv = document.getElementById('trainOptions');
+    if (trainOptionsDiv) {
+        console.log('trainOptions div found');
+    } else {
+        console.error('trainOptions div NOT found!');
+    }
+    
+    // Check if restaurantOptionsContainer div exists
+    const restaurantContainer = document.getElementById('restaurantOptionsContainer');
+    if (restaurantContainer) {
+        console.log('restaurantOptionsContainer div found');
+    } else {
+        console.error('restaurantOptionsContainer div NOT found!');
+    }
+    
+    try {
+        // Key task details
+        const taskDetails = {
+            title: "RAISE Summit - Annecy",
+            dates: "July 9-11, 2025",
+            location: "Annecy, France",
+            description: "Planning for the RAISE Summit in Annecy including travel and dining options."
+        };
+        
+        // Initialize with empty arrays, will load from Google Sheets
+        let trainOptions = [];
+        let restaurantOptions = [];
+        
+        // Load data from Google Sheets
+        try {
+            // Load train options
+            console.log('Attempting to load train options...');
+            try {
+                trainOptions = await window.loadTrainOptions(); // Using the function from data-functions.js
+                console.log('Train options loaded:', trainOptions.length);
+                
+                if (trainOptions.length === 0) {
+                    console.error('No train options found in Google Sheets');
+                    throw new Error('No train options found in Google Sheet');
+                }
+            } catch (error) {
+                console.error('Failed to load train options from Google Sheets:', error);
+                // No fallback - just show error and continue with empty array
+                trainOptions = [];
+                document.getElementById('trainOptions').innerHTML = `
+                    <div class="alert alert-danger">
+                        <h4>Error Loading Train Data</h4>
+                        <p>Unable to load train options from Google Sheets. Please check your connection and try again.</p>
+                        <p>Error details: ${error.message}</p>
+                    </div>
+                `;
+                trainOptions = [
+                    {
+                        id: 1,
+                        departure: "Paris Lyon",
+                        arrival: "Annecy",
+                        departureDate: "2025-07-09",
+                        departureTime: "09:46",
+                        arrivalTime: "13:29",
+                        duration: "4h",
+                        priceRegularUSD: 135.41,
+                        priceFirstClassUSD: 218.04,
+                        totalPriceUSD: 270.82,
+                        priceRegularEUR: 125.20,
+                        priceFirstClassEUR: 201.70,
+                        totalPriceEUR: 250.50,
+                        tag: "Earliest",
+                        link: "https://www.google.com/travel"
+                    },
+                    {
+                        id: 2,
+                        departure: "Paris Lyon",
+                        arrival: "Annecy",
+                        departureDate: "2025-07-09",
+                        departureTime: "12:46",
+                        arrivalTime: "16:32",
+                        duration: "4h",
+                        priceRegularUSD: 107.31,
+                        priceFirstClassUSD: 130.39,
+                        totalPriceUSD: 218.48,
+                        priceRegularEUR: 99.25,
+                        priceFirstClassEUR: 120.60,
+                        totalPriceEUR: 202.10,
+                        tag: "",
+                        link: "https://www.google.com/travel"
+                    },
+                    {
+                        id: 3,
+                        departure: "Paris Lyon",
+                        arrival: "Annecy",
+                        departureDate: "2025-07-09",
+                        departureTime: "17:46",
+                        arrivalTime: "21:40",
+                        duration: "4h",
+                        priceRegularUSD: 86.50,
+                        priceFirstClassUSD: 117.70,
+                        totalPriceUSD: 170.68,
+                        priceRegularEUR: 80.00,
+                        priceFirstClassEUR: 108.90,
+                        totalPriceEUR: 157.90,
+                        tag: "Latest",
+                        link: "https://www.google.com/travel"
+                    }
+                ];
+            }
+        
+        // Load restaurant options
+        console.log('Attempting to load restaurant options...');
+        try {
+            restaurantOptions = await window.loadRestaurantOptions(); // Using the function from data-functions.js
+            console.log('Restaurant options loaded:', restaurantOptions.length);
+            
+            if (restaurantOptions.length === 0) {
+                console.error('No restaurant options found in Google Sheets');
+                throw new Error('No restaurant options found in Google Sheet');
+            }
+        } catch (error) {
+            console.error('Failed to load restaurant options from Google Sheets:', error);
+            // Use hardcoded database as fallback
+            if (window.restaurantDatabase) {
+                restaurantOptions = window.restaurantDatabase;
+                console.log('Using hardcoded restaurant database as fallback');
+            } else {
+                restaurantOptions = [];
+                document.getElementById('restaurantOptionsContainer').innerHTML = `
+                    <div class="alert alert-danger">
+                        <h4>Error Loading Restaurant Data</h4>
+                        <p>Unable to load restaurant options from Google Sheets. Please check your connection and try again.</p>
+                        <p>Error details: ${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+        } catch (error) {
+            console.error('Error loading restaurant options:', error);
+        }
+    } catch (error) {
+        console.error('Error loading data from Google Sheets:', error);
+        // Initialize with hardcoded fallback data
+        alert('Failed to load data from Google Sheets. Using fallback data.');
+    }
     
     // Global settings for price display
     let currencyDisplay = "USD"; // Default currency (USD or EUR)
     let classType = "regular"; // Default class type (regular or firstClass)
 
-    // Data structure for restaurants
-    const restaurantOptions = [
-        {
-            id: 1,
-            name: "Cozna",
-            cuisine: "Contemporary",
-            price: "€€€",
-            location: "Annecy",
-            rating: 4.6,
-            mapLink: "https://maps.app.goo.gl/qsHULaNXYMhf5ein8",
-            website: "https://restaurantcozna.com/",
-            description: "Elegant dining with local ingredients and creative dishes",
-            suitable: ["dinner"],
-            availableDates: ["2025-07-09", "2025-07-10", "2025-07-11"]
-        },
-        {
-            id: 2,
-            name: "La Ciboulette",
-            cuisine: "French",
-            price: "€€€",
-            location: "Annecy",
-            rating: 4.8,
-            mapLink: "https://maps.app.goo.gl/Wxsf655N2RcnTtxa8",
-            website: "https://bookings.zenchef.com/results?rid=374570&pid=1001",
-            description: "Michelin-starred restaurant with elegant French cuisine",
-            suitable: ["dinner"],
-            availableDates: ["2025-07-09", "2025-07-11"]
-        },
-        {
-            id: 3,
-            name: "L'Esquisse",
-            cuisine: "French",
-            price: "€€€",
-            location: "Annecy",
-            rating: 4.7,
-            mapLink: "https://maps.app.goo.gl/K4rJALs11whwvYCMA",
-            website: "https://bookings.zenchef.com/results?rid=359839&pid=1001",
-            description: "Creative French cuisine with local ingredients and a beautiful view",
-            suitable: ["dinner"],
-            availableDates: ["2025-07-09", "2025-07-10", "2025-07-11"]
-        },
-        {
-            id: 4,
-            name: "Le Chalet",
-            cuisine: "Swiss/Savoyard",
-            price: "€€",
-            location: "Annecy",
-            rating: 4.5,
-            mapLink: "https://maps.app.goo.gl/9tSxaDBjaZ4SgHUh9",
-            description: "Traditional alpine cuisine featuring fondue and raclette",
-            suitable: ["lunch", "dinner"],
-            availableDates: ["2025-07-09", "2025-07-10", "2025-07-11"]
-        },
-        {
-            id: 5,
-            name: "Le Freti",
-            cuisine: "Savoyard",
-            price: "€€",
-            location: "Annecy",
-            rating: 4.4,
-            mapLink: "https://maps.app.goo.gl/sv9QakyBWpxxdzq96",
-            description: "Authentic Savoyard cuisine specializing in cheese dishes",
-            suitable: ["lunch", "dinner"],
-            availableDates: ["2025-07-09", "2025-07-10", "2025-07-11"]
-        },
-        {
-            id: 6,
-            name: "Le Belvédère",
-            cuisine: "French/Modern",
-            price: "€€€",
-            location: "Annecy",
-            rating: 4.6,
-            mapLink: "https://maps.app.goo.gl/7V1DD1fByDx9pBvs6",
-            description: "Panoramic views with sophisticated French cuisine",
-            suitable: ["dinner"],
-            availableDates: ["2025-07-10", "2025-07-11"]
-        },
-        {
-            id: 7,
-            name: "Café de la Place",
-            cuisine: "French/Casual",
-            price: "€€",
-            location: "Annecy",
-            rating: 4.3,
-            mapLink: "https://maps.app.goo.gl/F8jw6nk9ZG1kmxWM6",
-            description: "Relaxed bistro fare in a central location",
-            suitable: ["lunch"],
-            availableDates: ["2025-07-09", "2025-07-10", "2025-07-11"]
-        },
-        {
-            id: 8,
-            name: "Auberge du Lac",
-            cuisine: "French/Seafood",
-            price: "€€€",
-            location: "Annecy",
-            rating: 4.7,
-            mapLink: "https://maps.app.goo.gl/ue5i2r3S2PVAc14b9",
-            description: "Lakeside dining featuring fresh seafood and lake fish",
-            suitable: ["lunch", "dinner"],
-            availableDates: ["2025-07-10", "2025-07-11"]
-        },
-        {
-            id: 9,
-            name: "Le Bistrot des Tilleuls",
-            cuisine: "French",
-            price: "€€",
-            location: "Annecy",
-            rating: 4.4,
-            mapLink: "https://maps.app.goo.gl/7ESamMNH6zNprVzp6",
-            description: "Cozy bistro with traditional French dishes",
-            suitable: ["lunch"],
-            availableDates: ["2025-07-09", "2025-07-10", "2025-07-11"]
-        },
-        {
-            id: 10,
-            name: "La Coupole",
-            cuisine: "Italian/Pizza",
-            price: "€",
-            location: "Annecy",
-            rating: 4.2,
-            mapLink: "https://maps.app.goo.gl/xwMT8cneQVjbyyoj9",
-            description: "Casual Italian cuisine with authentic pizzas",
-            suitable: ["lunch"],
-            availableDates: ["2025-07-09", "2025-07-10", "2025-07-11"]
-        },
-        {
-            id: 11,
-            name: "L'Étage",
-            cuisine: "French/Modern",
-            price: "€€",
-            location: "Annecy",
-            rating: 4.5,
-            mapLink: "https://maps.app.goo.gl/U8aVgRu3MC7evLx76",
-            description: "Contemporary French cuisine with a creative touch",
-            suitable: ["dinner"],
-            availableDates: ["2025-07-09", "2025-07-10"]
-        }
-    ];
+    // Hardcoded data is now used as fallback in the catch block above
+    // Use hardcoded database if no restaurants loaded
+    if (restaurantOptions.length === 0 && window.restaurantDatabase) {
+        restaurantOptions = window.restaurantDatabase;
+        console.log('Using hardcoded restaurant database');
+    }
 
     // Days of the trip
     const tripDays = [
@@ -263,6 +246,8 @@ document.addEventListener('DOMContentLoaded', function() {
             currencyDisplay = this.checked ? 'EUR' : 'USD';
             renderTrainOptions();
         });
+
+// The global function definitions have been moved to the send-functions.js file
         
         trainOptions.forEach(train => {
             const trainCard = document.createElement('div');
@@ -463,11 +448,11 @@ document.addEventListener('DOMContentLoaded', function() {
         const thead = document.createElement('thead');
         thead.innerHTML = `
             <tr>
-                <th>Restaurant</th>
+                <th>Restaurant Name</th>
                 <th>Cuisine</th>
-                <th>Price</th>
-                <th>Rating</th>
-                <th>Suitable For</th>
+                <th>Price Range</th>
+                <th>Distance (from hotel)</th>
+                <th>Reservation</th>
                 <th>Actions</th>
             </tr>
         `;
@@ -478,10 +463,6 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Render all restaurant options
         restaurantOptions.forEach(restaurant => {
-            const suitableFor = [];
-            if (restaurant.suitable.includes('lunch')) suitableFor.push('Lunch');
-            if (restaurant.suitable.includes('dinner')) suitableFor.push('Dinner');
-            
             const row = document.createElement('tr');
             row.className = 'restaurant-item';
             row.setAttribute('data-id', restaurant.id);
@@ -491,18 +472,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 <td>
                     <div class="d-flex align-items-center">
                         <span class="drag-handle me-2">☰</span>
-                        <strong>${restaurant.name}</strong>
+                        <strong class="restaurant-name-clickable" style="cursor: pointer; color: #0066cc;">${restaurant.name}</strong>
                     </div>
                 </td>
                 <td>${restaurant.cuisine}</td>
-                <td>${restaurant.price}</td>
-                <td>${restaurant.rating} ★</td>
-                <td><span class="meal-badge">${suitableFor.join(' & ')}</span></td>
+                <td>${restaurant.priceRange}</td>
+                <td>${restaurant.distance}</td>
                 <td>
-                    <div class="d-flex">
-                        <a href="${restaurant.mapLink}" target="_blank" class="btn btn-sm btn-outline-secondary me-1">Map</a>
-                        ${restaurant.website ? `<a href="${restaurant.website}" target="_blank" class="btn btn-sm btn-outline-secondary">Web</a>` : ''}
-                    </div>
+                    ${restaurant.reservation ? `<a href="${restaurant.reservation}" target="_blank" class="btn btn-sm btn-outline-primary">Reserve</a>` : 'N/A'}
+                </td>
+                <td>
+                    <button class="btn btn-sm btn-outline-info view-details-btn" data-id="${restaurant.id}">View Details</button>
                 </td>
             `;
             
@@ -512,25 +492,129 @@ document.addEventListener('DOMContentLoaded', function() {
         table.appendChild(tbody);
         restaurantContainer.appendChild(table);
 
-        // Add tooltip with description
+        // Add event listeners for restaurant name clicks and view details
         document.querySelectorAll('.restaurant-item').forEach(item => {
             const restaurantId = parseInt(item.getAttribute('data-id'));
-            const restaurant = restaurantOptions.find(r => r.id === restaurantId);
-            if (restaurant) {
-                const restaurantName = item.querySelector('strong');
-                restaurantName.setAttribute('title', restaurant.description);
-            }
             
-            // Add event listeners for restaurant selection
+            // Add event listeners for restaurant name clicks
+            const restaurantName = item.querySelector('.restaurant-name-clickable');
+            restaurantName.addEventListener('click', function() {
+                showRestaurantModal(restaurantId);
+            });
+            
+            // Add event listeners for view details button
+            const viewDetailsBtn = item.querySelector('.view-details-btn');
+            viewDetailsBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                showRestaurantModal(restaurantId);
+            });
+            
+            // Add event listeners for restaurant selection (for drag and drop)
             item.addEventListener('click', function() {
-                const restaurantId = parseInt(this.getAttribute('data-id'));
-                
-                // Toggle the selected class
+                // Toggle the selected class for drag and drop
                 this.classList.toggle('selected');
-                
                 updateItinerary();
             });
         });
+    }
+
+    // Show restaurant modal with detailed information
+    function showRestaurantModal(restaurantId) {
+        const restaurant = restaurantOptions.find(r => r.id === restaurantId);
+        if (!restaurant) return;
+
+        // Check if modal already exists
+        let modal = document.getElementById('restaurantModal');
+        if (!modal) {
+            // Create modal
+            modal = document.createElement('div');
+            modal.className = 'modal fade';
+            modal.id = 'restaurantModal';
+            modal.tabIndex = '-1';
+            modal.setAttribute('aria-labelledby', 'restaurantModalLabel');
+            modal.setAttribute('aria-hidden', 'true');
+            document.body.appendChild(modal);
+        }
+
+        // Create image gallery
+        const imageGallery = restaurant.images ? restaurant.images.map((img, index) => 
+            `<div class="carousel-item ${index === 0 ? 'active' : ''}">
+                <img src="${img}" class="d-block w-100" alt="${restaurant.name}" style="height: 300px; object-fit: cover;">
+            </div>`
+        ).join('') : '<div class="carousel-item active"><div class="d-flex align-items-center justify-content-center" style="height: 300px; background-color: #f8f9fa;"><span class="text-muted">No images available</span></div></div>';
+
+        modal.innerHTML = `
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="restaurantModalLabel">${restaurant.name}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div id="restaurantCarousel" class="carousel slide" data-bs-ride="carousel">
+                                    <div class="carousel-inner">
+                                        ${imageGallery}
+                                    </div>
+                                    ${restaurant.images && restaurant.images.length > 1 ? `
+                                    <button class="carousel-control-prev" type="button" data-bs-target="#restaurantCarousel" data-bs-slide="prev">
+                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                        <span class="visually-hidden">Previous</span>
+                                    </button>
+                                    <button class="carousel-control-next" type="button" data-bs-target="#restaurantCarousel" data-bs-slide="next">
+                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                        <span class="visually-hidden">Next</span>
+                                    </button>
+                                    ` : ''}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <table class="table table-borderless">
+                                    <tr>
+                                        <td><strong>Cuisine:</strong></td>
+                                        <td>${restaurant.cuisine}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Price Range:</strong></td>
+                                        <td>${restaurant.priceRange}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Distance:</strong></td>
+                                        <td>${restaurant.distance}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Reservation:</strong></td>
+                                        <td>
+                                            ${restaurant.reservation ? `<a href="${restaurant.reservation}" target="_blank" class="btn btn-sm btn-primary">Make Reservation</a>` : 'N/A'}
+                                        </td>
+                                    </tr>
+                                </table>
+                                <div class="mt-3">
+                                    <h6><strong>Vibe/Setting:</strong></h6>
+                                    <p>${restaurant.vibe}</p>
+                                </div>
+                                <div class="mt-3">
+                                    <h6><strong>Notable Dishes:</strong></h6>
+                                    <p>${restaurant.notableDishes}</p>
+                                </div>
+                                <div class="mt-3">
+                                    <h6><strong>Notes:</strong></h6>
+                                    <p>${restaurant.notes}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        // Initialize and show modal
+        const modalInstance = new bootstrap.Modal(modal);
+        modalInstance.show();
     }
 
 
@@ -854,7 +938,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Initialize Google Sheets API for backend storage
     function initGoogleSheetsBackend() {
-        const GOOGLE_SHEETS_API_URL = 'https://script.google.com/macros/s/AKfycbxUTSzyMC7OBiAznFbcOpXzbmvwB6_cjId-a4Nvve5PEI2b-TerwWnjXNNdXB5EDlIt/exec';
+        const GOOGLE_SHEETS_API_URL = window.dataFunctions.API_URL;
         
         // Add Google Sheets API script
         if (!document.getElementById('google-sheets-api')) {
@@ -923,79 +1007,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
     }
     
-    // Test function for Google Sheets integration
-    // Create functions for global use
-    // Will be attached to window object at the end
-    function _sendSampleData() {
-        console.log('Sending sample data to Google Sheets...');
-    
-        // Sample data based on PDF content
-        const sampleData = {
-            train: trainOptions[1], // Middle train option
-            restaurants: {
-                "2025-07-09": { 
-                    lunch: [4, 9], // Le Chalet and Le Bistrot des Tilleuls
-                    dinner: [1, 2]  // Cozna and La Ciboulette
-                },
-                "2025-07-10": { 
-                    lunch: [7, 10], // Café de la Place and La Coupole
-                    dinner: [3, 6]   // L'Esquisse and Le Belvédère
-                },
-                "2025-07-11": { 
-                    lunch: [5, 8],  // Le Freti and Auberge du Lac
-                    dinner: [3]      // L'Esquisse
-                }
-            },
-            lastUpdated: new Date().toISOString()
-        };
-    
-        // Save to Google Sheets
-        saveToGoogleSheets(sampleData);
-        
-        return "Sample data sent to Google Sheets! Check the sheet for results.";
-    };
-
-    function _testGoogleSheetsIntegration() {
-        console.log('Testing Google Sheets integration...');
-        console.log('API URL:', GOOGLE_SHEETS_API_URL);
-        
-        // Test data
-        const testData = {
-            train: trainOptions[0],
-            restaurants: {
-                "2025-07-09": { lunch: [4], dinner: [1] },
-                "2025-07-10": { lunch: [7], dinner: [3] }
-            },
-            lastUpdated: new Date().toISOString()
-        };
-        
-        // Test saving
-        console.log('Testing save...');
-        fetch(GOOGLE_SHEETS_API_URL, {
-            method: 'POST',
-            body: JSON.stringify({
-                action: 'save',
-                data: testData
-            }),
-            headers: {'Content-Type': 'application/json'}
-        }).then(response => {
-            console.log('Save response status:', response.status);
-            return response.json();
-        }).then(result => {
-            console.log('Save result:', result);
-            
-            // Now test loading
-            console.log('Testing load...');
-            return fetch(GOOGLE_SHEETS_API_URL + '?action=load');
-        }).then(response => {
-            console.log('Load response status:', response.status);
-            return response.json();
-        }).then(result => {
-            console.log('Load result:', result);
-        }).catch(error => {
-            console.error('Test error:', error);
-        });
-    };
+    // Test functions are now defined directly on the window object outside this function
         
         // Show save confirmation message
         function showSaveConfirmation(success) {
@@ -1067,6 +1079,9 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Then try to load from Google Sheets
             loadFromGoogleSheets();
+            
+            // Load train and restaurant options from Google Sheets
+            reloadOptionsFromGoogleSheets();
         }
         
         // Load data from Google Sheets
@@ -1113,22 +1128,232 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Add functions to global scope
-    window.sendSampleData = _sendSampleData;
-    window.testGoogleSheetsIntegration = _testGoogleSheetsIntegration;
+    // Use global functions from send-functions.js instead
+    // This section has been commented out as we're using the functions from send-functions.js instead
+    /*
+    window.sendSampleData = function() {
+        console.log('Sending sample data to Google Sheets...');
+        
+        // Sample data based on PDF content
+        const sampleData = {
+            train: trainOptions[1], // Middle train option
+            restaurants: {
+                "2025-07-09": { 
+                    lunch: [4, 9], // Le Chalet and Le Bistrot des Tilleuls
+                    dinner: [1, 2]  // Cozna and La Ciboulette
+                },
+                "2025-07-10": { 
+                    lunch: [7, 10], // Café de la Place and La Coupole
+                    dinner: [3, 6]   // L'Esquisse and Le Belvédère
+                },
+                "2025-07-11": { 
+                    lunch: [5, 8],  // Le Freti and Auberge du Lac
+                    dinner: [3]      // L'Esquisse
+                }
+            },
+            lastUpdated: new Date().toISOString()
+        };
+        
+        // Save to Google Sheets
+        saveToGoogleSheets(sampleData);
+        
+        return "Sample data sent to Google Sheets! Check the sheet for results.";
+    };
+    
+    window.testGoogleSheetsIntegration = function() {
+        console.log('Testing Google Sheets integration...');
+        console.log('API URL:', GOOGLE_SHEETS_API_URL);
+        
+        // Test data
+        const testData = {
+            train: trainOptions[0],
+            restaurants: {
+                "2025-07-09": { lunch: [4], dinner: [1] },
+                "2025-07-10": { lunch: [7], dinner: [3] }
+            },
+            lastUpdated: new Date().toISOString()
+        };
+        
+        // Test saving
+        console.log('Testing save...');
+        fetch(GOOGLE_SHEETS_API_URL, {
+            method: 'POST',
+            body: JSON.stringify({
+                action: 'save',
+                data: testData
+            }),
+            headers: {'Content-Type': 'application/json'}
+        }).then(response => {
+            console.log('Save response status:', response.status);
+            return response.json();
+        }).then(result => {
+            console.log('Save result:', result);
+            
+            // Now test loading
+            console.log('Testing load...');
+            return fetch(GOOGLE_SHEETS_API_URL + '?action=load');
+        }).then(response => {
+            console.log('Load response status:', response.status);
+            return response.json();
+        }).then(result => {
+            console.log('Load result:', result);
+        }).catch(error => {
+            console.error('Test error:', error);
+        });
+    };
+    */
+
+// Function to reload options from Google Sheets
+async function reloadOptionsFromGoogleSheets() {
+    try {
+        // Attempt to load train options
+        const newTrainOptions = await window.dataFunctions.loadTrainOptions();
+        if (newTrainOptions && newTrainOptions.length > 0) {
+            trainOptions = newTrainOptions;
+            console.log('Train options reloaded from Google Sheets');
+        }
+        
+        // Attempt to load restaurant options
+        const newRestaurantOptions = await window.dataFunctions.loadRestaurantOptions();
+        if (newRestaurantOptions && newRestaurantOptions.length > 0) {
+            restaurantOptions = newRestaurantOptions;
+            console.log('Restaurant options reloaded from Google Sheets');
+        }
+        
+        // Re-render the options with the new data
+        renderTrainOptions();
+        renderRestaurantOptions();
+    } catch (error) {
+        console.error('Error reloading options from Google Sheets:', error);
+    }
+}
+
+// Expose function globally
+window.reloadOptionsFromGoogleSheets = reloadOptionsFromGoogleSheets;
 
     // Initialize the application
     function init() {
-        // Display task details
-        document.getElementById('taskTitle').textContent = taskDetails.title;
-        document.getElementById('taskDates').textContent = taskDetails.dates;
-        document.getElementById('taskDescription').textContent = taskDetails.description;
-        
-        renderTrainOptions();
-        renderRestaurantOptions();
-        initGoogleSheetsBackend();
+        try {
+            console.log('Initializing app...');
+            // Display task details
+            document.getElementById('taskTitle').textContent = taskDetails.title;
+            document.getElementById('taskDates').textContent = taskDetails.dates;
+            document.getElementById('taskDescription').textContent = taskDetails.description;
+            
+            // IMPORTANT: Skip data loading and use hardcoded data directly
+            console.log('Using hardcoded data instead of loading from API');
+            
+            // Use hardcoded train data
+            trainOptions = [
+                {
+                    id: 1,
+                    departure: "Paris Lyon",
+                    arrival: "Annecy",
+                    departureDate: "2025-07-09",
+                    departureTime: "09:46",
+                    arrivalTime: "13:29",
+                    duration: "4h",
+                    priceRegularUSD: 135.41,
+                    priceFirstClassUSD: 218.04,
+                    totalPriceUSD: 270.82,
+                    priceRegularEUR: 125.20,
+                    priceFirstClassEUR: 201.70,
+                    totalPriceEUR: 250.50,
+                    tag: "Earliest",
+                    link: "https://www.google.com/travel"
+                },
+                {
+                    id: 2,
+                    departure: "Paris Lyon",
+                    arrival: "Annecy",
+                    departureDate: "2025-07-09",
+                    departureTime: "12:46",
+                    arrivalTime: "16:32",
+                    duration: "4h",
+                    priceRegularUSD: 107.31,
+                    priceFirstClassUSD: 130.39,
+                    totalPriceUSD: 218.48,
+                    priceRegularEUR: 99.25,
+                    priceFirstClassEUR: 120.60,
+                    totalPriceEUR: 202.10,
+                    tag: "",
+                    link: "https://www.google.com/travel"
+                },
+                {
+                    id: 3,
+                    departure: "Paris Lyon",
+                    arrival: "Annecy",
+                    departureDate: "2025-07-09",
+                    departureTime: "17:46",
+                    arrivalTime: "21:40",
+                    duration: "4h",
+                    priceRegularUSD: 86.50,
+                    priceFirstClassUSD: 117.70,
+                    totalPriceUSD: 170.68,
+                    priceRegularEUR: 80.00,
+                    priceFirstClassEUR: 108.90,
+                    totalPriceEUR: 157.90,
+                    tag: "Latest",
+                    link: "https://www.google.com/travel"
+                }
+            ];
+            
+            // Use hardcoded restaurant data
+            restaurantOptions = [
+                {
+                    id: 1,
+                    name: "Cozna",
+                    cuisine: "Contemporary",
+                    price: "€€€",
+                    location: "Annecy",
+                    rating: 4.6,
+                    mapLink: "https://maps.app.goo.gl/qsHULaNXYMhf5ein8",
+                    website: "https://restaurantcozna.com/",
+                    description: "Elegant dining with local ingredients and creative dishes",
+                    suitable: ["dinner"],
+                    availableDates: ["2025-07-09", "2025-07-10", "2025-07-11"]
+                },
+                {
+                    id: 2,
+                    name: "La Ciboulette",
+                    cuisine: "French",
+                    price: "€€€",
+                    location: "Annecy",
+                    rating: 4.8,
+                    mapLink: "https://maps.app.goo.gl/Wxsf655N2RcnTtxa8",
+                    website: "https://bookings.zenchef.com/results?rid=374570&pid=1001",
+                    description: "Michelin-starred restaurant with elegant French cuisine",
+                    suitable: ["dinner"],
+                    availableDates: ["2025-07-09", "2025-07-11"]
+                }
+            ];
+            
+            console.log('About to render train options...');
+            renderTrainOptions();
+            console.log('Train options rendered');
+            
+            console.log('About to render restaurant options...');
+            renderRestaurantOptions();
+            console.log('Restaurant options rendered');
+            
+            console.log('About to initialize Google Sheets backend...');
+            initGoogleSheetsBackend();
+            console.log('Google Sheets backend initialized');
+        } catch (error) {
+            console.error('Error in init():', error);
+            // Last resort - try direct rendering
+            try {
+                window.dataFunctions.testRender();
+            } catch (e) {
+                console.error('Even test render failed:', e);
+            }
+        }
     }
 
     // Start the application
     init();
+} catch (error) {
+    console.error('Error in main app.js:', error);
+    alert('Error initializing application: ' + error.message);
+}
 });

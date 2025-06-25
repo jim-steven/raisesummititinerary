@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>RAISE Summit - Annecy Data Test</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .train-card {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        .restaurant-item {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <h1>RAISE Summit - Annecy Data Test</h1>
+        <p class="lead">This page demonstrates the train and restaurant data display</p>
+        
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <h2>Train Options</h2>
+                <div id="trainOptions">
+                    <!-- Train data will be added here -->
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <h2>Restaurant Options</h2>
+                <div id="restaurantOptions">
+                    <!-- Restaurant data will be added here -->
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Train data
+        const trainData = [
+            {
+                id: 1,
+                departure: "Paris Lyon",
+                arrival: "Annecy",
+                departureDate: "2025-07-09",
+                departureTime: "09:46",
+                arrivalTime: "13:29",
+                duration: "4h",
+                priceRegularUSD: 135.41,
+                priceFirstClassUSD: 218.04,
+                totalPriceUSD: 270.82,
+                priceRegularEUR: 125.20,
+                priceFirstClassEUR: 201.70,
+                totalPriceEUR: 250.50,
+                tag: "Earliest",
+                link: "https://www.google.com/travel"
+            },
+            {
+                id: 2,
+                departure: "Paris Lyon",
+                arrival: "Annecy",
+                departureDate: "2025-07-09",
+                departureTime: "12:46",
+                arrivalTime: "16:32",
+                duration: "4h",
+                priceRegularUSD: 107.31,
+                priceFirstClassUSD: 130.39,
+                totalPriceUSD: 218.48,
+                priceRegularEUR: 99.25,
+                priceFirstClassEUR: 120.60,
+                totalPriceEUR: 202.10,
+                tag: "",
+                link: "https://www.google.com/travel"
+            },
+            {
+                id: 3,
+                departure: "Paris Lyon",
+                arrival: "Annecy",
+                departureDate: "2025-07-09",
+                departureTime: "17:46",
+                arrivalTime: "21:40",
+                duration: "4h",
+                priceRegularUSD: 86.50,
+                priceFirstClassUSD: 117.70,
+                totalPriceUSD: 170.68,
+                priceRegularEUR: 80.00,
+                priceFirstClassEUR: 108.90,
+                totalPriceEUR: 157.90,
+                tag: "Latest",
+                link: "https://www.google.com/travel"
+            }
+        ];
+        
+        // Restaurant data
+        const restaurantData = [
+            {
+                id: 1,
+                name: "Cozna",
+                cuisine: "Contemporary",
+                price: "u20acu20acu20ac",
+                location: "Annecy",
+                rating: 4.6,
+                mapLink: "https://maps.app.goo.gl/qsHULaNXYMhf5ein8",
+                website: "https://restaurantcozna.com/",
+                description: "Elegant dining with local ingredients and creative dishes",
+                suitable: ["dinner"],
+                availableDates: ["2025-07-09", "2025-07-10", "2025-07-11"]
+            },
+            {
+                id: 2,
+                name: "La Ciboulette",
+                cuisine: "French",
+                price: "u20acu20acu20ac",
+                location: "Annecy",
+                rating: 4.8,
+                mapLink: "https://maps.app.goo.gl/Wxsf655N2RcnTtxa8",
+                website: "https://bookings.zenchef.com/results?rid=374570&pid=1001",
+                description: "Michelin-starred restaurant with elegant French cuisine",
+                suitable: ["dinner"],
+                availableDates: ["2025-07-09", "2025-07-11"]
+            },
+            {
+                id: 3,
+                name: "L'Esquisse",
+                cuisine: "French",
+                price: "u20acu20acu20ac",
+                location: "Annecy",
+                rating: 4.7,
+                mapLink: "https://maps.app.goo.gl/K4rJALs11whwvYCMA",
+                website: "https://bookings.zenchef.com/results?rid=359839&pid=1001",
+                description: "Creative French cuisine with local ingredients and a beautiful view",
+                suitable: ["dinner"],
+                availableDates: ["2025-07-09", "2025-07-10", "2025-07-11"]
+            }
+        ];
+        
+        // Render train data
+        function renderTrains() {
+            const container = document.getElementById('trainOptions');
+            let html = '';
+            
+            trainData.forEach(train => {
+                html += `
+                    <div class="train-card" data-id="${train.id}">
+                        <h3>${train.departure} u2192 ${train.arrival}</h3>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="badge bg-secondary">${train.departureTime}</span>
+                            <span>u2192</span>
+                            <span class="badge bg-secondary">${train.arrivalTime}</span>
+                        </div>
+                        <p>Duration: ${train.duration}</p>
+                        <div class="mb-3">
+                            <p class="mb-1">Price (per person): $${train.priceRegularUSD.toFixed(2)}</p>
+                            <p class="mb-0">Total Price (2 people): $${(train.priceRegularUSD * 2).toFixed(2)}</p>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <button class="btn btn-sm btn-primary">Select</button>
+                            ${train.tag ? `<span class="badge bg-${train.tag === 'Earliest' ? 'success' : 'warning'} ms-2">${train.tag}</span>` : ''}
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+        
+        // Render restaurant data
+        function renderRestaurants() {
+            const container = document.getElementById('restaurantOptions');
+            let html = '';
+            
+            restaurantData.forEach(restaurant => {
+                const suitableFor = restaurant.suitable.map(s => s.charAt(0).toUpperCase() + s.slice(1)).join(' & ');
+                
+                html += `
+                    <div class="restaurant-item" data-id="${restaurant.id}">
+                        <h3>${restaurant.name}</h3>
+                        <p>${restaurant.cuisine} | ${restaurant.price} | Rating: ${restaurant.rating} u2605</p>
+                        <p>${restaurant.description}</p>
+                        <p><span class="badge bg-info">${suitableFor}</span></p>
+                        <div>
+                            <a href="${restaurant.mapLink}" target="_blank" class="btn btn-sm btn-outline-secondary me-2">Map</a>
+                            <a href="${restaurant.website}" target="_blank" class="btn btn-sm btn-outline-primary">Website</a>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+        
+        // Call the render functions when the page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            renderTrains();
+            renderRestaurants();
+        });
+    </script>
+</body>
+</html>

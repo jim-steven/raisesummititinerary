@@ -29,7 +29,7 @@ function doOptions(e) {
   output.setMimeType(ContentService.MimeType.JSON);
   output.setContent(JSON.stringify({status: 'ok'}));
   
-  // Set CORS headers using setHeader instead of addHeader
+  // Set CORS headers
   return output.setHeader('Access-Control-Allow-Origin', '*')
     .setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
     .setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -60,19 +60,24 @@ function handleRequest(e) {
       result = { success: false, error: 'Invalid action' };
     }
     
-    // Most basic response possible without chaining
+    // Response with CORS headers
     var response = ContentService.createTextOutput();
     response.setMimeType(ContentService.MimeType.JSON);
     response.setContent(JSON.stringify(result));
     
-    return response;
+    // Add CORS headers
+    return response.setHeader('Access-Control-Allow-Origin', '*')
+      .setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
+      .setHeader('Access-Control-Allow-Headers', 'Content-Type');
   } catch (error) {
-    // Simplest error response
+    // Error response with CORS headers
     var errorResponse = ContentService.createTextOutput();
     errorResponse.setMimeType(ContentService.MimeType.JSON);
     errorResponse.setContent(JSON.stringify({ success: false, error: error.toString() }));
     
-    return errorResponse;
+    return errorResponse.setHeader('Access-Control-Allow-Origin', '*')
+      .setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
+      .setHeader('Access-Control-Allow-Headers', 'Content-Type');
   }
 }
 

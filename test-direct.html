@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Direct Rendering</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .train-card { border: 1px solid #ddd; border-radius: 5px; padding: 10px; margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+    <h1>Test Direct Data Rendering</h1>
+    
+    <h2>Train Options</h2>
+    <div id="trainOptions"></div>
+    
+    <h2>Restaurant Options</h2>
+    <div id="restaurantOptionsContainer"></div>
+    
+    <button id="renderBtn">Render Test Data</button>
+    
+    <script>
+        // Define test data
+        const testTrains = [
+            {
+                id: 1,
+                departure: "Paris Lyon",
+                arrival: "Annecy",
+                departureDate: "2025-07-09",
+                departureTime: "09:46",
+                arrivalTime: "13:29",
+                duration: "4h",
+                priceRegularUSD: 135.41,
+                priceFirstClassUSD: 218.04,
+                totalPriceUSD: 270.82,
+                priceRegularEUR: 125.20,
+                priceFirstClassEUR: 201.70,
+                totalPriceEUR: 250.50,
+                tag: "Earliest",
+                link: "https://www.google.com/travel"
+            },
+            {
+                id: 2,
+                departure: "Paris Lyon",
+                arrival: "Annecy",
+                departureDate: "2025-07-09",
+                departureTime: "12:46",
+                arrivalTime: "16:32",
+                duration: "4h",
+                priceRegularUSD: 107.31,
+                priceFirstClassUSD: 130.39,
+                totalPriceUSD: 218.48,
+                priceRegularEUR: 99.25,
+                priceFirstClassEUR: 120.60,
+                totalPriceEUR: 202.10,
+                tag: "",
+                link: "https://www.google.com/travel"
+            }
+        ];
+        
+        const testRestaurants = [
+            {
+                id: 1,
+                name: "Cozna",
+                cuisine: "Contemporary",
+                price: "€€€",
+                location: "Annecy",
+                rating: 4.6,
+                mapLink: "https://maps.app.goo.gl/qsHULaNXYMhf5ein8",
+                website: "https://restaurantcozna.com/",
+                description: "Elegant dining with local ingredients and creative dishes",
+                suitable: ["dinner"],
+                availableDates: ["2025-07-09", "2025-07-10", "2025-07-11"]
+            },
+            {
+                id: 2,
+                name: "La Ciboulette",
+                cuisine: "French",
+                price: "€€€",
+                location: "Annecy",
+                rating: 4.8,
+                mapLink: "https://maps.app.goo.gl/Wxsf655N2RcnTtxa8",
+                website: "https://bookings.zenchef.com/results?rid=374570&pid=1001",
+                description: "Michelin-starred restaurant with elegant French cuisine",
+                suitable: ["dinner"],
+                availableDates: ["2025-07-09", "2025-07-11"]
+            }
+        ];
+        
+        // Render function
+        function renderData() {
+            // Render trains
+            const trainContainer = document.getElementById('trainOptions');
+            let trainHtml = '';
+            testTrains.forEach(train => {
+                trainHtml += `
+                    <div class="train-card">
+                        <h3>${train.departure} → ${train.arrival}</h3>
+                        <p>Date: ${train.departureDate}</p>
+                        <p>Time: ${train.departureTime} - ${train.arrivalTime} (${train.duration})</p>
+                        <p>Price: $${train.priceRegularUSD} (Regular) / $${train.priceFirstClassUSD} (First Class)</p>
+                    </div>
+                `;
+            });
+            trainContainer.innerHTML = trainHtml;
+            
+            // Render restaurants
+            const restaurantContainer = document.getElementById('restaurantOptionsContainer');
+            let restaurantHtml = '<ul>';
+            testRestaurants.forEach(restaurant => {
+                restaurantHtml += `
+                    <li>
+                        <strong>${restaurant.name}</strong> - ${restaurant.cuisine}<br>
+                        Price: ${restaurant.price} | Rating: ${restaurant.rating}★<br>
+                        <a href="${restaurant.mapLink}" target="_blank">Map</a> | 
+                        <a href="${restaurant.website}" target="_blank">Website</a><br>
+                        ${restaurant.description}
+                    </li>
+                `;
+            });
+            restaurantHtml += '</ul>';
+            restaurantContainer.innerHTML = restaurantHtml;
+            
+            console.log('Test data rendered');
+        }
+        
+        // Add event listener to button
+        document.getElementById('renderBtn').addEventListener('click', renderData);
+    </script>
+</body>
+</html>
