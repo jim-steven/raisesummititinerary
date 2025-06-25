@@ -505,6 +505,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Re-initialize drag and drop after DOM update
         setTimeout(() => {
             initDragAndDrop();
+            setupMealCellSortables();
         }, 50);
     }
 
@@ -617,6 +618,34 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         console.log('Drag and drop setup complete');
+        
+        // Setup sortable for meal cells to allow reordering
+        setupMealCellSortables();
+    }
+    
+    function setupMealCellSortables() {
+        const mealCells = document.querySelectorAll('.meal-cell');
+        mealCells.forEach(cell => {
+            new Sortable(cell, {
+                group: 'meal-items',
+                animation: 150,
+                ghostClass: 'sortable-ghost',
+                chosenClass: 'sortable-chosen',
+                onEnd: function(evt) {
+                    const targetDate = evt.to.getAttribute('data-date');
+                    const targetMealType = evt.to.getAttribute('data-meal-type');
+                    
+                    // Update the order in selectedRestaurants based on new DOM order
+                    const restaurantElements = evt.to.querySelectorAll('.draggable-item');
+                    const newOrder = Array.from(restaurantElements).map(el => parseInt(el.getAttribute('data-id')));
+                    
+                    selectedRestaurants[targetDate][targetMealType] = newOrder;
+                    
+                    // Refresh the display to update ranking tags
+                    updateItinerary();
+                }
+            });
+        });
     }
 
     // Initialize the app
