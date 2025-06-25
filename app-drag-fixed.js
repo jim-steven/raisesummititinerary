@@ -15,6 +15,14 @@ document.addEventListener('DOMContentLoaded', function() {
     // Use the restaurant database
     const restaurantOptions = window.restaurantDatabase;
     
+    // Helper function to get restaurant ranking tag
+    function getRankingTag(restaurantId) {
+        const index = restaurantOptions.findIndex(r => r.id === restaurantId);
+        if (index === -1) return '';
+        if (index === 0) return 'Top';
+        return `Option ${index + 1}`;
+    }
+    
     // Hardcoded train options (simplified)
     const trainOptions = [
         {
@@ -399,11 +407,15 @@ document.addEventListener('DOMContentLoaded', function() {
                         restaurantElement.setAttribute('data-date', day.date);
                         restaurantElement.setAttribute('data-meal-type', 'lunch');
                         
+                        const rankingTag = getRankingTag(lunch.id);
                         restaurantElement.innerHTML = `
                             <div class="d-flex justify-content-between align-items-center p-2 mb-2 border rounded">
                                 <span class="drag-handle">☰</span>
                                 <div class="d-flex align-items-center flex-grow-1">
-                                    <strong>${lunch.name}</strong>
+                                    <div>
+                                        <strong>${lunch.name}</strong>
+                                        ${rankingTag ? `<span class="badge bg-primary ms-2">${rankingTag}</span>` : ''}
+                                    </div>
                                     <div class="ms-auto">
                                         ${lunch.reservation ? `<a href="${lunch.reservation}" target="_blank" class="btn btn-xs btn-outline-primary me-1">Book</a>` : ''}
                                         ${lunch.phone ? `<a href="tel:${lunch.phone}" class="btn btn-xs btn-outline-secondary me-1">📞</a>` : ''}
@@ -441,11 +453,15 @@ document.addEventListener('DOMContentLoaded', function() {
                         restaurantElement.setAttribute('data-date', day.date);
                         restaurantElement.setAttribute('data-meal-type', 'dinner');
                         
+                        const rankingTag = getRankingTag(dinner.id);
                         restaurantElement.innerHTML = `
                             <div class="d-flex justify-content-between align-items-center p-2 mb-2 border rounded">
                                 <span class="drag-handle">☰</span>
                                 <div class="d-flex align-items-center flex-grow-1">
-                                    <strong>${dinner.name}</strong>
+                                    <div>
+                                        <strong>${dinner.name}</strong>
+                                        ${rankingTag ? `<span class="badge bg-primary ms-2">${rankingTag}</span>` : ''}
+                                    </div>
                                     <div class="ms-auto">
                                         ${dinner.reservation ? `<a href="${dinner.reservation}" target="_blank" class="btn btn-xs btn-outline-primary me-1">Book</a>` : ''}
                                         ${dinner.phone ? `<a href="tel:${dinner.phone}" class="btn btn-xs btn-outline-secondary me-1">📞</a>` : ''}
