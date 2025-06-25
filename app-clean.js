@@ -549,14 +549,18 @@ document.addEventListener('DOMContentLoaded', function() {
                     put: false
                 },
                 sort: false,
+                onClone: function(evt) {
+                    // When cloning, ensure the original stays in place
+                    console.log('Cloning restaurant for drag');
+                },
                 onEnd: function(evt) {
-                    if (evt.to !== evt.from) {
-                        const item = evt.item;
-                        const restaurantId = parseInt(item.getAttribute('data-id'));
+                    // Remove the cloned item from the restaurant list (it should stay there)
+                    if (evt.item && evt.to !== evt.from) {
+                        const restaurantId = parseInt(evt.item.getAttribute('data-id'));
                         
                         // Find target cell
                         const targetCell = evt.to;
-                        if (targetCell.classList.contains('meal-cell')) {
+                        if (targetCell && targetCell.classList.contains('meal-cell')) {
                             const targetDate = targetCell.getAttribute('data-date');
                             const targetMealType = targetCell.getAttribute('data-meal-type');
                             
@@ -567,14 +571,18 @@ document.addEventListener('DOMContentLoaded', function() {
                                 selectedRestaurants[targetDate][targetMealType].push(restaurantId);
                             }
                             
-                            // Mark the original row as selected
-                            const originalRow = document.querySelector(`.restaurant-item[data-id="${restaurantId}"]`);
-                            if (originalRow) {
-                                originalRow.classList.add('selected');
+                            // Remove the cloned item from restaurant table
+                            if (evt.item.parentNode === restaurantContainer) {
+                                evt.item.remove();
                             }
                             
                             // Update the UI
                             updateItinerary();
+                        } else {
+                            // If dropped somewhere else, remove the clone
+                            if (evt.item) {
+                                evt.item.remove();
+                            }
                         }
                     }
                 }

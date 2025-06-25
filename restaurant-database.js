@@ -11,11 +11,11 @@ const restaurantDatabase = [
         notableDishes: "Seafood risotto, Lamb tagine, Mediterranean fish",
         notes: "Popular spot, booking recommended. Known for fresh ingredients.",
         images: [
-            "https://media-cdn.tripadvisor.com/media/photo-s/15/33/f5/5a/le-denti.jpg",
-            "https://media-cdn.tripadvisor.com/media/photo-s/15/33/f5/59/le-denti.jpg",
-            "https://media-cdn.tripadvisor.com/media/photo-s/15/33/f5/58/le-denti.jpg",
-            "https://media-cdn.tripadvisor.com/media/photo-s/15/33/f5/57/le-denti.jpg",
-            "https://media-cdn.tripadvisor.com/media/photo-s/15/33/f5/56/le-denti.jpg"
+            "https://picsum.photos/400/300?random=1",
+            "https://picsum.photos/400/300?random=2", 
+            "https://picsum.photos/400/300?random=3",
+            "https://picsum.photos/400/300?random=4",
+            "https://picsum.photos/400/300?random=5"
         ],
         suitable: ["lunch", "dinner"],
         availableDates: ["2025-07-09", "2025-07-10", "2025-07-11"]
@@ -31,11 +31,11 @@ const restaurantDatabase = [
         notableDishes: "Tasting menu, Local lake fish, Seasonal vegetables",
         notes: "Michelin-recommended. Creative cuisine with local ingredients.",
         images: [
-            "https://media-cdn.tripadvisor.com/media/photo-s/1a/8b/3c/2d/cozna.jpg",
-            "https://media-cdn.tripadvisor.com/media/photo-s/1a/8b/3c/2c/cozna.jpg",
-            "https://media-cdn.tripadvisor.com/media/photo-s/1a/8b/3c/2b/cozna.jpg",
-            "https://media-cdn.tripadvisor.com/media/photo-s/1a/8b/3c/2a/cozna.jpg",
-            "https://media-cdn.tripadvisor.com/media/photo-s/1a/8b/3c/29/cozna.jpg"
+            "https://picsum.photos/400/300?random=6",
+            "https://picsum.photos/400/300?random=7",
+            "https://picsum.photos/400/300?random=8",
+            "https://picsum.photos/400/300?random=9",
+            "https://picsum.photos/400/300?random=10"
         ],
         suitable: ["dinner"],
         availableDates: ["2025-07-09", "2025-07-10", "2025-07-11"]
@@ -51,11 +51,11 @@ const restaurantDatabase = [
         notableDishes: "Sushi, Ramen, Tempura, Wagyu beef",
         notes: "Authentic Japanese cuisine. Fresh sushi and traditional dishes.",
         images: [
-            "https://media-cdn.tripadvisor.com/media/photo-s/1c/2d/4e/5f/minami-annecy.jpg",
-            "https://media-cdn.tripadvisor.com/media/photo-s/1c/2d/4e/5e/minami-annecy.jpg",
-            "https://media-cdn.tripadvisor.com/media/photo-s/1c/2d/4e/5d/minami-annecy.jpg",
-            "https://media-cdn.tripadvisor.com/media/photo-s/1c/2d/4e/5c/minami-annecy.jpg",
-            "https://media-cdn.tripadvisor.com/media/photo-s/1c/2d/4e/5b/minami-annecy.jpg"
+            "https://picsum.photos/400/300?random=11",
+            "https://picsum.photos/400/300?random=12",
+            "https://picsum.photos/400/300?random=13",
+            "https://picsum.photos/400/300?random=14",
+            "https://picsum.photos/400/300?random=15"
         ],
         suitable: ["lunch", "dinner"],
         availableDates: ["2025-07-09", "2025-07-10", "2025-07-11"]
@@ -71,11 +71,11 @@ const restaurantDatabase = [
         notableDishes: "Fondue Savoyarde, Raclette, Tartiflette, Local cheeses",
         notes: "Family-run restaurant. Perfect for authentic alpine experience.",
         images: [
-            "https://media-cdn.tripadvisor.com/media/photo-s/0f/8a/2c/1d/chez-mamie-lise.jpg",
-            "https://media-cdn.tripadvisor.com/media/photo-s/0f/8a/2c/1c/chez-mamie-lise.jpg",
-            "https://media-cdn.tripadvisor.com/media/photo-s/0f/8a/2c/1b/chez-mamie-lise.jpg",
-            "https://media-cdn.tripadvisor.com/media/photo-s/0f/8a/2c/1a/chez-mamie-lise.jpg",
-            "https://media-cdn.tripadvisor.com/media/photo-s/0f/8a/2c/19/chez-mamie-lise.jpg"
+            "https://picsum.photos/400/300?random=16",
+            "https://picsum.photos/400/300?random=17",
+            "https://picsum.photos/400/300?random=18",
+            "https://picsum.photos/400/300?random=19",
+            "https://picsum.photos/400/300?random=20"
         ],
         suitable: ["lunch", "dinner"],
         availableDates: ["2025-07-09", "2025-07-10", "2025-07-11"]
@@ -91,11 +91,11 @@ const restaurantDatabase = [
         notableDishes: "Fondue, Raclette, Rösti, Boeuf Bourguignon",
         notes: "Cozy mountain restaurant. Great for cheese dishes and hearty meals.",
         images: [
-            "https://media-cdn.tripadvisor.com/media/photo-s/12/4f/8c/2a/le-chalet-annecy.jpg",
-            "https://media-cdn.tripadvisor.com/media/photo-s/12/4f/8c/29/le-chalet-annecy.jpg",
-            "https://media-cdn.tripadvisor.com/media/photo-s/12/4f/8c/28/le-chalet-annecy.jpg",
-            "https://media-cdn.tripadvisor.com/media/photo-s/12/4f/8c/27/le-chalet-annecy.jpg",
-            "https://media-cdn.tripadvisor.com/media/photo-s/12/4f/8c/26/le-chalet-annecy.jpg"
+            "https://picsum.photos/400/300?random=21",
+            "https://picsum.photos/400/300?random=22",
+            "https://picsum.photos/400/300?random=23",
+            "https://picsum.photos/400/300?random=24",
+            "https://picsum.photos/400/300?random=25"
         ],
         suitable: ["lunch", "dinner"],
         availableDates: ["2025-07-09", "2025-07-10", "2025-07-11"]
@@ -111,11 +111,11 @@ const restaurantDatabase = [
         notableDishes: "Steak frites, Coq au vin, French onion soup",
         notes: "Popular local bistro. Great for traditional French dishes.",
         images: [
-            "https://media-cdn.tripadvisor.com/media/photo-s/16/a2/3f/4d/le-biboquet.jpg",
-            "https://media-cdn.tripadvisor.com/media/photo-s/16/a2/3f/4c/le-biboquet.jpg",
-            "https://media-cdn.tripadvisor.com/media/photo-s/16/a2/3f/4b/le-biboquet.jpg",
-            "https://media-cdn.tripadvisor.com/media/photo-s/16/a2/3f/4a/le-biboquet.jpg",
-            "https://media-cdn.tripadvisor.com/media/photo-s/16/a2/3f/49/le-biboquet.jpg"
+            "https://picsum.photos/400/300?random=26",
+            "https://picsum.photos/400/300?random=27",
+            "https://picsum.photos/400/300?random=28",
+            "https://picsum.photos/400/300?random=29",
+            "https://picsum.photos/400/300?random=30"
         ],
         suitable: ["lunch", "dinner"],
         availableDates: ["2025-07-09", "2025-07-10", "2025-07-11"]
@@ -131,11 +131,11 @@ const restaurantDatabase = [
         notableDishes: "Tartiflette, Diots (local sausages), Reblochon cheese dishes",
         notes: "Specializes in local Savoyard cuisine. Known for cheese dishes.",
         images: [
-            "https://media-cdn.tripadvisor.com/media/photo-s/13/2a/1b/5f/le-freti.jpg",
-            "https://media-cdn.tripadvisor.com/media/photo-s/13/2a/1b/5e/le-freti.jpg",
-            "https://media-cdn.tripadvisor.com/media/photo-s/13/2a/1b/5d/le-freti.jpg",
-            "https://media-cdn.tripadvisor.com/media/photo-s/13/2a/1b/5c/le-freti.jpg",
-            "https://media-cdn.tripadvisor.com/media/photo-s/13/2a/1b/5b/le-freti.jpg"
+            "https://picsum.photos/400/300?random=31",
+            "https://picsum.photos/400/300?random=32",
+            "https://picsum.photos/400/300?random=33",
+            "https://picsum.photos/400/300?random=34",
+            "https://picsum.photos/400/300?random=35"
         ],
         suitable: ["lunch", "dinner"],
         availableDates: ["2025-07-09", "2025-07-10", "2025-07-11"]
@@ -151,11 +151,11 @@ const restaurantDatabase = [
         notableDishes: "Seasonal tasting menu, Lake fish, Innovative French cuisine",
         notes: "Creative modern French cuisine. Seasonal ingredients focus.",
         images: [
-            "https://media-cdn.tripadvisor.com/media/photo-s/1d/4e/2a/3f/le-vertumne.jpg",
-            "https://media-cdn.tripadvisor.com/media/photo-s/1d/4e/2a/3e/le-vertumne.jpg",
-            "https://media-cdn.tripadvisor.com/media/photo-s/1d/4e/2a/3d/le-vertumne.jpg",
-            "https://media-cdn.tripadvisor.com/media/photo-s/1d/4e/2a/3c/le-vertumne.jpg",
-            "https://media-cdn.tripadvisor.com/media/photo-s/1d/4e/2a/3b/le-vertumne.jpg"
+            "https://picsum.photos/400/300?random=36",
+            "https://picsum.photos/400/300?random=37",
+            "https://picsum.photos/400/300?random=38",
+            "https://picsum.photos/400/300?random=39",
+            "https://picsum.photos/400/300?random=40"
         ],
         suitable: ["dinner"],
         availableDates: ["2025-07-09", "2025-07-10", "2025-07-11"]
@@ -171,11 +171,11 @@ const restaurantDatabase = [
         notableDishes: "Charcuterie boards, Wine selection, Small plates",
         notes: "Great wine selection. Perfect for aperitifs and light meals.",
         images: [
-            "https://media-cdn.tripadvisor.com/media/photo-s/18/7c/4d/2f/bon-pain-bon-vin.jpg",
-            "https://media-cdn.tripadvisor.com/media/photo-s/18/7c/4d/2e/bon-pain-bon-vin.jpg",
-            "https://media-cdn.tripadvisor.com/media/photo-s/18/7c/4d/2d/bon-pain-bon-vin.jpg",
-            "https://media-cdn.tripadvisor.com/media/photo-s/18/7c/4d/2c/bon-pain-bon-vin.jpg",
-            "https://media-cdn.tripadvisor.com/media/photo-s/18/7c/4d/2b/bon-pain-bon-vin.jpg"
+            "https://picsum.photos/400/300?random=41",
+            "https://picsum.photos/400/300?random=42",
+            "https://picsum.photos/400/300?random=43",
+            "https://picsum.photos/400/300?random=44",
+            "https://picsum.photos/400/300?random=45"
         ],
         suitable: ["lunch", "dinner"],
         availableDates: ["2025-07-09", "2025-07-10", "2025-07-11"]
@@ -191,11 +191,11 @@ const restaurantDatabase = [
         notableDishes: "Creative small plates, Seasonal menu, Modern French classics",
         notes: "Hip and trendy spot. Great for modern French cuisine with a twist.",
         images: [
-            "https://media-cdn.tripadvisor.com/media/photo-s/1a/2f/5c/4d/mazette.jpg",
-            "https://media-cdn.tripadvisor.com/media/photo-s/1a/2f/5c/4c/mazette.jpg",
-            "https://media-cdn.tripadvisor.com/media/photo-s/1a/2f/5c/4b/mazette.jpg",
-            "https://media-cdn.tripadvisor.com/media/photo-s/1a/2f/5c/4a/mazette.jpg",
-            "https://media-cdn.tripadvisor.com/media/photo-s/1a/2f/5c/49/mazette.jpg"
+            "https://picsum.photos/400/300?random=46",
+            "https://picsum.photos/400/300?random=47",
+            "https://picsum.photos/400/300?random=48",
+            "https://picsum.photos/400/300?random=49",
+            "https://picsum.photos/400/300?random=50"
         ],
         suitable: ["lunch", "dinner"],
         availableDates: ["2025-07-09", "2025-07-10", "2025-07-11"]
@@ -211,11 +211,11 @@ const restaurantDatabase = [
         notableDishes: "Thai curry, Vietnamese pho, Asian fusion dishes",
         notes: "High-quality Asian fusion cuisine. Great for those wanting variety.",
         images: [
-            "https://media-cdn.tripadvisor.com/media/photo-s/1b/6c/3d/2f/saba-annecy.jpg",
-            "https://media-cdn.tripadvisor.com/media/photo-s/1b/6c/3d/2e/saba-annecy.jpg",
-            "https://media-cdn.tripadvisor.com/media/photo-s/1b/6c/3d/2d/saba-annecy.jpg",
-            "https://media-cdn.tripadvisor.com/media/photo-s/1b/6c/3d/2c/saba-annecy.jpg",
-            "https://media-cdn.tripadvisor.com/media/photo-s/1b/6c/3d/2b/saba-annecy.jpg"
+            "https://picsum.photos/400/300?random=51",
+            "https://picsum.photos/400/300?random=52",
+            "https://picsum.photos/400/300?random=53",
+            "https://picsum.photos/400/300?random=54",
+            "https://picsum.photos/400/300?random=55"
         ],
         suitable: ["lunch", "dinner"],
         availableDates: ["2025-07-09", "2025-07-10", "2025-07-11"]
@@ -231,11 +231,11 @@ const restaurantDatabase = [
         notableDishes: "Fresh salads, Grilled fish, International dishes",
         notes: "Beautiful terrace with lake views. Great for lighter meals.",
         images: [
-            "https://media-cdn.tripadvisor.com/media/photo-s/17/8b/4c/3f/le-verriere.jpg",
-            "https://media-cdn.tripadvisor.com/media/photo-s/17/8b/4c/3e/le-verriere.jpg",
-            "https://media-cdn.tripadvisor.com/media/photo-s/17/8b/4c/3d/le-verriere.jpg",
-            "https://media-cdn.tripadvisor.com/media/photo-s/17/8b/4c/3c/le-verriere.jpg",
-            "https://media-cdn.tripadvisor.com/media/photo-s/17/8b/4c/3b/le-verriere.jpg"
+            "https://picsum.photos/400/300?random=56",
+            "https://picsum.photos/400/300?random=57",
+            "https://picsum.photos/400/300?random=58",
+            "https://picsum.photos/400/300?random=59",
+            "https://picsum.photos/400/300?random=60"
         ],
         suitable: ["lunch", "dinner"],
         availableDates: ["2025-07-09", "2025-07-10", "2025-07-11"]
@@ -251,11 +251,11 @@ const restaurantDatabase = [
         notableDishes: "Duck confit, Escargot, Traditional French desserts",
         notes: "Charming location by the Thiou river. Classic French cuisine.",
         images: [
-            "https://media-cdn.tripadvisor.com/media/photo-s/14/6f/2a/5d/le-petit-thiou.jpg",
-            "https://media-cdn.tripadvisor.com/media/photo-s/14/6f/2a/5c/le-petit-thiou.jpg",
-            "https://media-cdn.tripadvisor.com/media/photo-s/14/6f/2a/5b/le-petit-thiou.jpg",
-            "https://media-cdn.tripadvisor.com/media/photo-s/14/6f/2a/5a/le-petit-thiou.jpg",
-            "https://media-cdn.tripadvisor.com/media/photo-s/14/6f/2a/59/le-petit-thiou.jpg"
+            "https://picsum.photos/400/300?random=61",
+            "https://picsum.photos/400/300?random=62",
+            "https://picsum.photos/400/300?random=63",
+            "https://picsum.photos/400/300?random=64",
+            "https://picsum.photos/400/300?random=65"
         ],
         suitable: ["lunch", "dinner"],
         availableDates: ["2025-07-09", "2025-07-10", "2025-07-11"]
