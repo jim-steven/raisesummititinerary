@@ -404,18 +404,184 @@ document.addEventListener('DOMContentLoaded', function() {
             
             tripDays.forEach(day => {
                 const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td class="date-cell">${day.day}<br>${formatDate(day.date)}</td>
-                    <td class="meal-cell lunch-cell" data-date="${day.date}" data-meal-type="lunch">
-                        <div class="meal-placeholder">Drop lunch options here</div>
-                    </td>
-                    <td class="meal-cell dinner-cell" data-date="${day.date}" data-meal-type="dinner">
-                        <div class="meal-placeholder">Drop dinner options here</div>
-                    </td>
-                `;
+                const lunchItems = selectedRestaurants[day.date].lunch;
+                const dinnerItems = selectedRestaurants[day.date].dinner;
+                
+                // Date cell
+                const dateCell = document.createElement('td');
+                dateCell.className = 'date-cell';
+                dateCell.innerHTML = `${day.day}<br>${formatDate(day.date)}`;
+                row.appendChild(dateCell);
+                
+                // Lunch cell
+                const lunchCell = document.createElement('td');
+                lunchCell.setAttribute('data-date', day.date);
+                lunchCell.setAttribute('data-meal-type', 'lunch');
+                lunchCell.className = 'meal-cell lunch-cell';
+                
+                if (lunchItems.length > 0) {
+                    lunchItems.forEach(restaurantId => {
+                        const lunch = restaurantOptions.find(r => r.id === restaurantId);
+                        if (lunch) {
+                            const restaurantElement = document.createElement('div');
+                            restaurantElement.className = 'draggable-item';
+                            restaurantElement.setAttribute('data-id', lunch.id);
+                            restaurantElement.setAttribute('data-date', day.date);
+                            restaurantElement.setAttribute('data-meal-type', 'lunch');
+                            
+                            restaurantElement.innerHTML = `
+                                <div class="d-flex justify-content-between align-items-center p-2 mb-2 border rounded">
+                                    <span class="drag-handle">☰</span>
+                                    <strong>${lunch.name}</strong>
+                                    ${lunch.reservation ? `<a href="${lunch.reservation}" target="_blank" class="btn btn-sm btn-outline-primary">Book</a>` : ''}
+                                    <button class="btn btn-sm btn-outline-danger remove-btn">×</button>
+                                </div>
+                            `;
+                            
+                            lunchCell.appendChild(restaurantElement);
+                        }
+                    });
+                } else {
+                    lunchCell.innerHTML = `<div class="meal-placeholder">Drop lunch options here</div>`;
+                }
+                row.appendChild(lunchCell);
+                
+                // Dinner cell
+                const dinnerCell = document.createElement('td');
+                dinnerCell.setAttribute('data-date', day.date);
+                dinnerCell.setAttribute('data-meal-type', 'dinner');
+                dinnerCell.className = 'meal-cell dinner-cell';
+                
+                if (dinnerItems.length > 0) {
+                    dinnerItems.forEach(restaurantId => {
+                        const dinner = restaurantOptions.find(r => r.id === restaurantId);
+                        if (dinner) {
+                            const restaurantElement = document.createElement('div');
+                            restaurantElement.className = 'draggable-item';
+                            restaurantElement.setAttribute('data-id', dinner.id);
+                            restaurantElement.setAttribute('data-date', day.date);
+                            restaurantElement.setAttribute('data-meal-type', 'dinner');
+                            
+                            restaurantElement.innerHTML = `
+                                <div class="d-flex justify-content-between align-items-center p-2 mb-2 border rounded">
+                                    <span class="drag-handle">☰</span>
+                                    <strong>${dinner.name}</strong>
+                                    ${dinner.reservation ? `<a href="${dinner.reservation}" target="_blank" class="btn btn-sm btn-outline-primary">Book</a>` : ''}
+                                    <button class="btn btn-sm btn-outline-danger remove-btn">×</button>
+                                </div>
+                            `;
+                            
+                            dinnerCell.appendChild(restaurantElement);
+                        }
+                    });
+                } else {
+                    dinnerCell.innerHTML = `<div class="meal-placeholder">Drop dinner options here</div>`;
+                }
+                row.appendChild(dinnerCell);
+                
                 mealScheduleBody.appendChild(row);
             });
+            
+            // Add event listeners for remove buttons
+            document.querySelectorAll('.remove-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const item = this.closest('.draggable-item');
+                    const date = item.getAttribute('data-date');
+                    const mealType = item.getAttribute('data-meal-type');
+                    const restaurantId = parseInt(item.getAttribute('data-id'));
+                    
+                    // Remove from selection
+                    const index = selectedRestaurants[date][mealType].indexOf(restaurantId);
+                    if (index > -1) {
+                        selectedRestaurants[date][mealType].splice(index, 1);
+                    }
+                    
+                    // Update UI
+                    updateItinerary();
+                });
+            });
         }
+    }
+
+    // Initialize drag and drop functionality
+    function initDragAndDrop() {
+        // Make table cells sortable for drag and drop
+        document.querySelectorAll('.meal-cell').forEach(cell => {
+            new Sortable(cell, {
+                animation: 150,
+                group: 'restaurants',
+                filter: '.meal-placeholder',
+                onAdd: function(evt) {
+                    const item = evt.item;
+                    const targetCell = evt.to;
+                    const date = targetCell.getAttribute('data-date');
+                    const mealType = targetCell.getAttribute('data-meal-type');
+                    const restaurantId = parseInt(item.getAttribute('data-id'));
+                    
+                    console.log(`Adding restaurant ${restaurantId} to ${mealType} on ${date}`);
+                    
+                    // Add to selectedRestaurants array if not already there
+                    if (!selectedRestaurants[date][mealType].includes(restaurantId)) {
+                        selectedRestaurants[date][mealType].push(restaurantId);
+                    }
+                    
+                    // Handle placeholders
+                    const placeholder = targetCell.querySelector('.meal-placeholder');
+                    if (placeholder) {
+                        placeholder.remove();
+                    }
+                    
+                    // Update the UI
+                    updateItinerary();
+                }
+            });
+        });
+        
+        // Allow dragging restaurants from options to table
+        const restaurantContainer = document.querySelector('#restaurantOptionsContainer tbody');
+        if (restaurantContainer) {
+            new Sortable(restaurantContainer, {
+                animation: 150,
+                group: {
+                    name: 'restaurants',
+                    pull: 'clone',
+                    put: false
+                },
+                sort: false,
+                onEnd: function(evt) {
+                    if (evt.to !== evt.from) {
+                        const item = evt.item;
+                        const restaurantId = parseInt(item.getAttribute('data-id'));
+                        
+                        // Find target cell
+                        const targetCell = evt.to;
+                        if (targetCell.classList.contains('meal-cell')) {
+                            const targetDate = targetCell.getAttribute('data-date');
+                            const targetMealType = targetCell.getAttribute('data-meal-type');
+                            
+                            console.log(`Dragged restaurant ${restaurantId} to ${targetMealType} on ${targetDate}`);
+                            
+                            // Add to selectedRestaurants array if not already there
+                            if (!selectedRestaurants[targetDate][targetMealType].includes(restaurantId)) {
+                                selectedRestaurants[targetDate][targetMealType].push(restaurantId);
+                            }
+                            
+                            // Mark the original row as selected
+                            const originalRow = document.querySelector(`.restaurant-item[data-id="${restaurantId}"]`);
+                            if (originalRow) {
+                                originalRow.classList.add('selected');
+                            }
+                            
+                            // Update the UI
+                            updateItinerary();
+                        }
+                    }
+                }
+            });
+        }
+        
+        console.log('Drag and drop initialized');
     }
 
     // Initialize the app
@@ -428,6 +594,9 @@ document.addEventListener('DOMContentLoaded', function() {
         
         console.log('Updating itinerary...');
         updateItinerary();
+        
+        console.log('Initializing drag and drop...');
+        initDragAndDrop();
         
         console.log('Clean restaurant app initialized successfully!');
     } catch (error) {
