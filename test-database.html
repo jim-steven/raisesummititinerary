@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Restaurant Database</title>
+</head>
+<body>
+    <h1>Restaurant Database Test</h1>
+    <div id="results"></div>
+
+    <script src="restaurant-database.js"></script>
+    <script>
+        console.log('Testing restaurant database...');
+        
+        if (window.restaurantDatabase) {
+            console.log('Database loaded with', window.restaurantDatabase.length, 'restaurants');
+            
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = `
+                <h2>✅ Database Loaded Successfully!</h2>
+                <p>Found ${window.restaurantDatabase.length} restaurants:</p>
+                <ul>
+                    ${window.restaurantDatabase.map(r => `
+                        <li><strong>${r.name}</strong> - ${r.cuisine} - ${r.priceRange} - ${r.distance}</li>
+                    `).join('')}
+                </ul>
+            `;
+        } else {
+            console.error('Database not loaded');
+            document.getElementById('results').innerHTML = '<h2>❌ Database Failed to Load</h2>';
+        }
+    </script>
+</body>
+</html>
