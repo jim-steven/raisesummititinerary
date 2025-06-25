@@ -222,13 +222,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
         tbody.innerHTML = '';
 
-        restaurantOptions.forEach(restaurant => {
+        restaurantOptions.forEach((restaurant, index) => {
             const row = document.createElement('tr');
             row.className = 'restaurant-row';
             row.setAttribute('data-id', restaurant.id);
             row.style.cursor = 'grab';
             
             row.innerHTML = `
+                <td class="text-center"><strong>${index + 1}</strong></td>
                 <td>
                     <div class="d-flex align-items-center">
                         <span class="drag-handle me-2">☰</span>
