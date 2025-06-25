@@ -62,8 +62,9 @@ document.addEventListener('DOMContentLoaded', function() {
     ];
 
     // State management
-    let selectedTrain = null;
+    let selectedTrain = trainOptions.find(t => t.id === 2); // Default to 12:46 → 16:32 train
     let showEuroPrices = false;
+    let selectedTrainClass = 'regular'; // 'regular' or 'firstClass'
     let selectedRestaurants = {
         '2025-07-08': { 
             lunch: [], // Summit lunch (not a restaurant)
@@ -98,11 +99,17 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
 
-        // Train selection
+        // Train selection and class toggle
         document.addEventListener('click', function(e) {
             if (e.target.classList.contains('select-train-btn')) {
                 const trainId = parseInt(e.target.getAttribute('data-train-id'));
                 selectTrain(trainId);
+            }
+            
+            if (e.target.classList.contains('train-class-btn')) {
+                const trainId = parseInt(e.target.getAttribute('data-train-id'));
+                const currentClass = e.target.getAttribute('data-class');
+                toggleTrainClass(trainId, e.target);
             }
             
             if (e.target.classList.contains('view-details-btn')) {
@@ -121,14 +128,21 @@ document.addEventListener('DOMContentLoaded', function() {
         container.innerHTML = '';
 
         trainOptions.forEach(train => {
+            // Default to regular class for pricing, but check if this train has been customized
             const price = showEuroPrices ? train.priceRegularEUR : train.priceRegularUSD;
             const currency = showEuroPrices ? '€' : '$';
             const totalPrice = (price * 2).toFixed(2);
+            
+            // Check if this train is selected
+            const isSelected = selectedTrain && selectedTrain.id === train.id;
+            const cardClass = isSelected ? 'border-primary bg-light' : '';
+            const selectBtnClass = isSelected ? 'btn-success' : 'btn-primary';
+            const selectBtnText = isSelected ? 'Selected' : 'Select';
 
             const trainCard = document.createElement('div');
             trainCard.className = 'col-md-4 mb-3 train-option';
             trainCard.innerHTML = `
-                <div class="card train-card h-100" data-id="${train.id}">
+                <div class="card train-card h-100 ${cardClass}" data-id="${train.id}">
                     <div class="card-body">
                         <h5 class="card-title">${train.departure} → ${train.arrival}</h5>
                         <div class="time-display mb-2">
@@ -143,12 +157,14 @@ document.addEventListener('DOMContentLoaded', function() {
                                     <div class="price-label">Price (per person):</div>
                                     <div class="price">${currency}${price}</div>
                                 </div>
-                                <button class="btn btn-outline-secondary btn-sm">Regular</button>
+                                <button class="btn btn-outline-secondary btn-sm train-class-btn" 
+                                        data-train-id="${train.id}" 
+                                        data-class="regular">Regular</button>
                             </div>
                             <p class="total-price">Total Price (2 people): ${currency}${totalPrice}</p>
                         </div>
                         <div class="d-flex justify-content-between align-items-center">
-                            <button class="btn btn-primary select-train-btn" data-train-id="${train.id}">Select</button>
+                            <button class="btn ${selectBtnClass} select-train-btn" data-train-id="${train.id}">${selectBtnText}</button>
                             ${train.tag ? `<span class="badge bg-secondary">${train.tag}</span>` : ''}
                             <a href="https://www.google.com/travel" target="_blank" class="btn btn-outline-primary btn-sm">Book</a>
                         </div>
@@ -164,6 +180,35 @@ document.addEventListener('DOMContentLoaded', function() {
     function selectTrain(trainId) {
         selectedTrain = trainOptions.find(t => t.id === trainId);
         updateItinerary();
+        renderTrainOptions(); // Re-render to show selection
+    }
+
+    function toggleTrainClass(trainId, buttonElement) {
+        const currentClass = buttonElement.getAttribute('data-class');
+        const newClass = currentClass === 'regular' ? 'firstClass' : 'regular';
+        
+        // Update the button
+        buttonElement.setAttribute('data-class', newClass);
+        buttonElement.textContent = newClass === 'regular' ? 'Regular' : 'First Class';
+        
+        // Update the pricing for this specific train card
+        const trainCard = buttonElement.closest('.train-card');
+        const train = trainOptions.find(t => t.id === trainId);
+        
+        if (train && trainCard) {
+            const price = showEuroPrices ? 
+                (newClass === 'regular' ? train.priceRegularEUR : train.priceFirstClassEUR) :
+                (newClass === 'regular' ? train.priceRegularUSD : train.priceFirstClassUSD);
+            const currency = showEuroPrices ? '€' : '$';
+            const totalPrice = (price * 2).toFixed(2);
+            
+            // Update price display
+            const priceElement = trainCard.querySelector('.price');
+            const totalPriceElement = trainCard.querySelector('.total-price');
+            
+            if (priceElement) priceElement.textContent = `${currency}${price}`;
+            if (totalPriceElement) totalPriceElement.textContent = `Total Price (2 people): ${currency}${totalPrice}`;
+        }
     }
 
     // Restaurant functionality
